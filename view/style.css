@@ -1,0 +1,92 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Cores do projeto */
+:root {
+    --header-bg: #161720;
+    --page-bg: rgb(32, 34, 44);
+    --text-light: #f8f8f2;
+    --highlight-pink: #92b5ff;
+}
+  
+body {
+    background-color: var(--page-bg); /* fundo do editor ou conteúdo principal */
+    font-family: 'Roboto', sans-serif;
+    color: var(--text-light);
+    align-items: center;
+}
+
+/* Header com cor distinta */
+header {
+    background-color: var(--header-bg);
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center; 
+    gap: 10px; 
+}
+
+.logo img {
+    height: 80px; 
+    width: auto;
+}
+
+.logo h2 {
+    font-size: 30px; 
+    font-weight: 500; 
+    font-family: 'Roboto', sans-serif; 
+    color: var(--text-light); 
+    margin: 0; 
+}
+
+/* Navegação */
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+/* Estilo dos links do menu */
+.nav-link {
+    position: relative;
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 30px;
+    font-weight: 500;
+    padding: 10px 5px;
+    transition: color 0.3s ease;
+}
+
+/* Risquinho que vai aparecer embaixo do link */
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 50%;  /* Começa no meio */
+    bottom: 0;
+    transform: translateX(-50%) scaleX(0);  /* Inicia com escala 0 */
+    transform-origin: center;  /* Faz o efeito de crescer do centro */
+    width: 100%;  /* Largura total do link */
+    height: 2px;
+    background-color: var(--highlight-pink);
+    transition: transform 0.35s ease;  /* Transição suave */
+}
+
+/* Quando o link for sobrevoado */
+.nav-link:hover::after {
+    transform: translateX(-50%) scaleX(1);  /* Expande para a largura total do link */
+}
+
+/* Link ativo (quando estiver na página atual) */
+.nav-link.active::after {
+    transform: translateX(-50%) scaleX(1);  /* Também expande para a largura total */
+    background-color: #63b3ed; /* Azul claro ou a cor que preferir */
+}
+
+  
