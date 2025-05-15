@@ -69,3 +69,12 @@ body, .container {
 #runCode:hover {
     background-color: #6a95ff;
 }
+/* Estilo do botão submit */
+#submitCode {
+    background-color: var(--highlight-pink);
+    color: #000;
+}
+
+#submitCode:hover {
+    background-color: #6a95ff;
+}
