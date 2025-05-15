@@ -1,0 +1,84 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, .container {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Container centralizado */
+.upload-container {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Título centralizado */
+.upload-container h2 {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* Área de drop personalizada */
+#dropZone {
+    width: 60%;
+    height: 150px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background-color: #282a36; /* mesmo fundo do CodeMirror com tema Dracula */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    color: #ccc;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-align: center;
+    padding: 20px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+#dropZone.dragover {
+    background-color: #383a59;  /* tom um pouco mais claro para o hover */
+    border-color: #6a95ff;
+}
+
+/* Botão de envio (id=uploadButton) */
+#uploadButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background-color: var(--highlight-pink, #ff90b3); /* fallback se a variável não existir */
+    color: #000;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+#uploadButton:hover {
+    background-color: #6a95ff;
+}
+
+/* Pré-visualização do conteúdo do arquivo */
+#fileContent {
+    display: none;
+    margin-top: 30px;
+    width: 60%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-family: monospace;
+    font-size: 14px;
+    white-space: pre-wrap;
+    background-color: #f9f9f9;
+}
