@@ -22,7 +22,7 @@ body {
 /* Header com cor distinta */
 header {
     background-color: var(--header-bg);
-    padding: 30px;
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,4 +89,55 @@ nav {
     background-color: #63b3ed; /* Azul claro ou a cor que preferir */
 }
 
+/* Estilos para a seção de introdução */
+.inicio {
+    max-width: 950px;
+    margin: 35px auto;
+    padding: 20px 20px;
+    background-color: #b6b0b0;
+    border: 1px solid #211f1f;
+    border-radius: 8px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 20px;
+    color: #1f1e1e;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.05);
+}
+ 
+/* Estilos para o título principal */
+.inicio h1 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: rgb(41, 36, 36);
+}
+
+/* Estilos para os parágrafos */
+.inicio p {
+    text-align: justify;
+    line-height: 1.63;
+    margin-bottom: 15px;
+}
+
+/* Estilos para a lista não ordenada*/
+.inicio ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+/* Estilos para os itens da lista */
+.inicio li {
+    margin-bottom: 10px;
+}
+
+/* Estilos para o rodapé - "Todos os direitos reservados" */
+.rodape {
+    text-align: center;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16px;
+    color: #666;
+    padding: 20px 0;
+    margin-top: 10px;
+}
+  
   
