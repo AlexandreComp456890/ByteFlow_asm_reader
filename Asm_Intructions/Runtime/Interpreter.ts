@@ -1,5 +1,5 @@
 import { InstructionSet } from "./IntructionsSet";
-import { ExecutionContext } from "./Runtime/ExecutionContext";
+import { ExecutionContext } from "./ExecutionContext";
 
 export class Interpreter {
   private instructionSet = new InstructionSet();
@@ -17,7 +17,7 @@ export class Interpreter {
     }
 
     for(const register in this.context.registers){
-      console.log(`${register}: 0x${this.context.getRegister(register).toString(16)}`);
+      console.log(`${register}:${ExecutionContext.fixToHex(this.context.getRegister(register))}`);
     } // Debug output
   }
 }

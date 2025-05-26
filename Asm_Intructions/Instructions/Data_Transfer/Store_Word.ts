@@ -15,6 +15,6 @@ export class StoreWord implements IInstruction {
         const [, dest, src1, src2] = match;
         const val1 = Number(src1);
         const val2 = context.getRegister(src2);
-        context.setMemory(dest, val1 + val2, context.getRegister(dest));
+        context.setMemory(val2 + val1, context.getRegister(dest));
     }
 }

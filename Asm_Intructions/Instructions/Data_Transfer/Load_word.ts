@@ -17,5 +17,6 @@ export class LoadWord implements IInstruction {
         const val1 = Number(src1);
         const val2 = context.getRegister(src2);
         context.setRegister(dest, context.getMemory(val2 + val1));
+        console.log(ExecutionContext.fixToHex(ExecutionContext.memory[val2 + val1]));
     }
 }
