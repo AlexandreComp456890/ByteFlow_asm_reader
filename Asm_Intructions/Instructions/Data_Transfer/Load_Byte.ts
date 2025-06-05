@@ -20,9 +20,25 @@ export class LoadByte implements IInstruction {
         //Control variable to facilitate the half word
         const addressOffset = val1 >= 4 ? (Number(src1)/4|0) *4 : 0;
         const newContext = context.getMemory(val2 + addressOffset);
+        
 
         context.setRegister(dest, this.byteLoad(newContext, val1 % 4|0));
+
+        console.log(`\n${ExecutionContext.fixToHex(
+            this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1}))}\n`
+        );
+    }
         
+    encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, immediate: number}): number {
+        // Type I
+        const opcode = "100000";
+        const registerValue = Object.keys(params.registers);
+
+        const rs = (registerValue.indexOf(params.rs)).toString(2).padStart(5, '0');
+        const rt = (registerValue.indexOf(params.rt)).toString(2).padStart(5, '0');
+        const immediate = params.immediate.toString(2).padStart(16, '0');
+
+        return parseInt((opcode + rs + rt + immediate),2);
     }
 
     /**
@@ -39,7 +55,6 @@ export class LoadByte implements IInstruction {
         mask = mask.slice((mask.length - 2) - realOffset, (mask.length) - realOffset);
 
         value = parseInt(mask.toString().replace(/[!.,]/g, ''), 16);
-        console.log(mask.toString().replace(/[!.,]/g, ''), value);
         return value;
     }
 }

@@ -18,10 +18,29 @@ export class StoreHalf implements IInstruction {
         const val2 = context.getRegister(src2);
 
         //Control variable to facilitate the half word
-        const addressOffset = val1 >= 4 ? (Number(src1)/4|0) *4 : 0;
+        const addressOffset1 = val1 >= 4 ? (Number(src1)/4|0) *4 : 0;
+        const addressOffset2 = val1 % 4;
+        const trueAddressOffset = addressOffset1 + addressOffset2;
         const newContext = context.getRegister(dest);
 
-        context.setMemory(val2 + addressOffset, this.halfWord(newContext, val1 % 4|0));
+        context.setMemory(val2 + trueAddressOffset, this.halfWord(newContext, val1 % 4|0));
+        if (val1 % 2 !== 0) return;
+        
+        console.log(`\n${ExecutionContext.fixToHex(
+            this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1}))}\n`
+        );
+    }
+        
+    encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, immediate: number}): number {
+        // Type I
+        const opcode = "101001";
+        const registerValue = Object.keys(params.registers);
+
+        const rs = (registerValue.indexOf(params.rs)).toString(2).padStart(5, '0');
+        const rt = (registerValue.indexOf(params.rt)).toString(2).padStart(5, '0');
+        const immediate = params.immediate.toString(2).padStart(16, '0');
+
+        return parseInt((opcode + rs + rt + immediate),2);
     }
 
     /**

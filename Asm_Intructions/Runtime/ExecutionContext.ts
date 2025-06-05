@@ -1,17 +1,22 @@
 export class ExecutionContext {
     //regiters atributes
     registers: Record<string, number> = {};
-    currentLine: string = "";
-
+    
     //memory atributes
     static memory: Record<number, number> = {};
     private MEMORY_START: number = 0x10008000;
     private MEMORY_END: number = 0x1001FFFF;
     
+    //Program couter control
+    currentLine: string = "";
+    allLines: Record<number,string> = {};
+    literals: Record<string, number> = {};
+    static programCounter:number = 0x00400000;
 
     constructor() {
         for (let r of [
             "zero",
+            "at",
             "v0", "v1",
             "a0", "a1", "a2", "a3",
             "t0","t1","t2","t3","t4","t5","t6","t7",
@@ -69,15 +74,12 @@ export class ExecutionContext {
             console.error(`Memory address ${ExecutionContext.fixToHex(address)} is out of bounds. Faulty line: ${this.currentLine}`);
             return false;
         }
-        if (half) {
-            if (address % 2 !== 0){
-                console.log(`Address ${ExecutionContext.fixToHex(address)} is not a valid start address on half word boundary.Faulty line: ${this.currentLine}`);
-                return false;
-            }
-            return true;
-        }
         if (!half && !byte && address % 4 !== 0){
-            console.log(`Address ${ExecutionContext.fixToHex(address)} is not a valid start address on word boundary.Faulty line: ${this.currentLine}`);
+            console.log(`Address ${ExecutionContext.fixToHex(address)} is not a valid start address on word boundary. Faulty line: ${this.currentLine}`);
+            return false;
+        }
+        if (half && address % 2 !== 0) {
+            console.log(`Address ${ExecutionContext.fixToHex(address)} is not a valid start address on half word boundary. Faulty line: ${this.currentLine}`);
             return false;
         }
         return true;
@@ -86,4 +88,5 @@ export class ExecutionContext {
     static fixToHex(value: number): string {
         return "0x" + value.toString(16).padStart(8, '0').toUpperCase();
     }
+
 }

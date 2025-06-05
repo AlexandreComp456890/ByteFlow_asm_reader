@@ -1,9 +1,9 @@
 import { IInstruction } from "../IInstructions";
 import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
-export class LoadWord implements IInstruction {
+export class And_immediate implements IInstruction {
     //lw $t0, 
-    private regex = /^\s*lw\s+\$(\w+),\s*([-+]?\w+)\s*\(\s*\$(\w+)\s*\)\s*$/i
+    private regex = /^\s*andi\s+\$(\w+),\s*\$(\w+),\s*([-+]?\w+)\s*$/i
 
     match(line: string): boolean{
         return this.regex.test(line);
@@ -14,22 +14,19 @@ export class LoadWord implements IInstruction {
         if (!match) return;
 
         const [, dest, src1, src2] = match;
-        const val1 = Number(src1);
-        const val2 = context.getRegister(src2);
-        const newContext = context.getMemory(val2 + val1);
-
-        if (newContext === null) return;
-
-        context.setRegister(dest, newContext);
+        const val1 = context.getRegister(src1);
+        const val2 = Number(src2);
+        
+        context.setRegister(dest, (val1 & val2) >>> 0);
 
         console.log(`\n${ExecutionContext.fixToHex(
-            this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1}))}\n`
+            this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: dest, immediate: val2}))}\n`
         );
     }
         
     encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, immediate: number}): number {
         // Type I
-        const opcode = "100011";
+        const opcode = "001100";
         const registerValue = Object.keys(params.registers);
 
         const rs = (registerValue.indexOf(params.rs)).toString(2).padStart(5, '0');

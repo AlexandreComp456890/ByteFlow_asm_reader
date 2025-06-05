@@ -1,10 +1,11 @@
 import { IInstruction } from "../IInstructions";
 import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
-export class Subtract implements IInstruction {
-    private regex = /^\s*sub\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*$/i;
+export class Nor implements IInstruction {
+    //lw $t0, 
+    private regex = /^\s*nor\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*$/i
 
-    match(line: string): boolean {
+    match(line: string): boolean{
         return this.regex.test(line);
     }
 
@@ -15,14 +16,18 @@ export class Subtract implements IInstruction {
         const [, dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
-        context.setRegister(dest, val1 - val2);
-        this.encondingForTheHolyMachine({registers: context.registers, rt: src2, rs: src1, rd: dest});
+        
+        // NOR operation is equivalent to NOT (A OR B)
+        // Using bytewise NOT (~) and OR (|)
+        context.setRegister(dest, (~(val1 | val2)) >>> 0);
+        this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: src2, rd: dest});
     }
-    
+        
+
     encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, rd: string}): number {
-        //opcode 0x00 for type R
+        // opcode 0x00 for type R
         const opcode = "000000";
-        const funct = "100000";
+        const funct = "100111";
         const registerValue = Object.keys(params.registers);
 
         const rs = (registerValue.indexOf(params.rs)).toString(2).padStart(5, '0');

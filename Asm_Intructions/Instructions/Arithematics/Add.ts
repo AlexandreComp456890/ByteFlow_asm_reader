@@ -16,5 +16,23 @@ export class Add implements IInstruction {
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
         context.setRegister(dest, val1 + val2);
+
+        console.log(ExecutionContext.fixToHex(
+            this.encondingForTheHolyMachine({registers: context.registers, rt: src2, rs: src1, rd: dest})
+        ));
+    }
+    
+    encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, rd: string}): number {
+        // opcode 0x00 for type R
+        const opcode = "000000";
+        const funct = "100000";
+        const registerValue = Object.keys(params.registers);
+
+        const rs = (registerValue.indexOf(params.rs)).toString(2).padStart(5, '0');
+        const rt = (registerValue.indexOf(params.rt)).toString(2).padStart(5, '0');
+        const rd = (registerValue.indexOf(params.rd)).toString(2).padStart(5, '0');
+
+        const shamt = "00000";
+        return parseInt((opcode + rs + rt + rd + shamt + funct),2);
     }
 }

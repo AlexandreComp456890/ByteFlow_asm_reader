@@ -1,6 +1,18 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,node
 
+
+### VisualStudioCode ###
+.vscode/*      
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+**/.history
+
 ### Node ###
 # Logs
 logs

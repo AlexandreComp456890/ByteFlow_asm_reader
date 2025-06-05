@@ -21,6 +21,22 @@ export class StoreByte implements IInstruction {
         const newContext = context.getRegister(dest);
 
         context.setMemory(val2 + addressOffset, this.byteStore(newContext, val1 % 4|0));
+        
+        console.log(`\n${ExecutionContext.fixToHex(
+            this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1}))}\n`
+        );
+    }
+        
+    encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, immediate: number}): number {
+        // Type I
+        const opcode = "101000";
+        const registerValue = Object.keys(params.registers);
+
+        const rs = (registerValue.indexOf(params.rs)).toString(2).padStart(5, '0');
+        const rt = (registerValue.indexOf(params.rt)).toString(2).padStart(5, '0');
+        const immediate = params.immediate.toString(2).padStart(16, '0');
+
+        return parseInt((opcode + rs + rt + immediate),2);
     }
 
     /**
@@ -41,7 +57,6 @@ export class StoreByte implements IInstruction {
             pattern[i] = mask[i - realOffset];;
         
         value = parseInt(pattern.toString().replace(/[!.,]/g, ''), 16);
-        console.log(pattern.toString().replace(/[!.,]/g, ''), value);
 
         return value;
     }

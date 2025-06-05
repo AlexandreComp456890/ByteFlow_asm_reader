@@ -11,7 +11,16 @@ export interface IInstruction {
     /**
      * @description Executes the instruction based on the current context.
      * @param context ExecutionContext
+     * @param programCounter (optinal) number
      * @returns void
      */
-    execute(context: ExecutionContext): void;
+    execute(context: ExecutionContext, programCounter?: number): void;
+
+    /**
+     * @description Returns the 32-bit word of the instruction.
+     * Used for instruction encoding to machine code.
+     * @return number
+     */
+    encondingForTheHolyMachine(params :
+        {registers?: Record<string,number>, rs?: string, rt?: string, rd?: string, shamt?: number, immediate?: number, target?: number}): number | number[];
 }
