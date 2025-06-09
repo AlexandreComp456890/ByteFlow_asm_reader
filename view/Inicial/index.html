@@ -1,59 +1,57 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!-- Define o documento como HTML5 -->
 <head>
-    <!-- Character encoding (supports special characters like ç, ã, etc.) -->
+    <!-- Codificação de caracteres para suportar acentuação e caracteres especiais -->
     <meta charset="UTF-8" />
-    <!-- Page title shown in the browser tab -->
+    <!-- Título mostrado na aba do navegador -->
     <title>ByteFlow</title>
-    <!-- Main CSS file -->
+    <!-- Link para o arquivo CSS principal -->
     <link rel="stylesheet" href="style.css" />
-    <!-- Enables responsive design for mobile devices -->
+    <!-- Configuração para tornar a página responsiva em dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Short description for search engines -->
+    <!-- Descrição curta para motores de busca -->
     <meta name="description" content="Intepretador assembly" />
-    <!-- Keywords for SEO -->
+    <!-- Palavras-chave para SEO -->
     <meta name="keywords" content="Intepretador assembly, assembly" />
-    <!-- Page authors -->
+    <!-- Autores da página -->
     <meta name="author" content="Yan Silva, Alexandre Rocha, Jhenifer Gomes" />
-    <!-- Favicon icon for the browser tab -->
+    <!-- Ícone que aparece na aba do navegador -->
     <link rel="icon" href="/caminho/do/favicon.ico" type="image/x-icon" />
-    <!-- Import Google Fonts -->
+    <!-- Importa a fonte Roboto do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
 </head>
 <body>
-    <div class="container">
-        <header class="header">
+    <div class="container"> <!-- Contêiner principal da página -->
+        <header class="header"> <!-- Cabeçalho com logo e navegação -->
             <div class="logo">
+                <!-- Logo da aplicação -->
                 <img src="logo.png" alt="logo"/>
-                <h2>ByteFlow</h2>
+                <h2>ByteFlow</h2> <!-- Nome da aplicação -->
             </div>
             
-            <nav>
-                <a href="index.html" class="nav-link" id="home">Início</a>
+            <nav> <!-- Menu de navegação -->
+                <a href="index.html" class="nav-link" id="home">Home</a>
                 <a href="../UploadCode/uploadCode.html" class="nav-link" id="upload">Upload</a>
                 <a href="../CodeEditor/codeEditor.html" class="nav-link" id="editor">Editor</a>
             </nav>
         </header>
-        <div class = "inicio">
-            <h1 align ="center">ByteFlow - Simulador MIPS</h1>
+        <div class="inicio"> <!-- Área principal de conteúdo inicial -->
+            <h1 align="center">ByteFlow - MIPS Simulator</h1> <!-- Título centralizado -->
             <br>
-            <p align = "center">O <strong>ByteFlow</strong> é uma ferramenta de simulação voltada para o estudo da arquitetura MIPS. 
-                Ele permite a execução passo a passo de programas em Assembly, oferecendo recursos como:</p>
-            <ul>
-                <li>Leitura de instruções MIPS e configuração de parâmetros de execução.</li>
-                <li>Visualização gráfica do estado da memória e dos registradores a cada ciclo de clock.</li>
-                <li>Monitoramento do registrador PC e representação da instrução atual em binário ou hexadecimal.</li>
-                <li>Cálculo do tempo total de execução do programa.</li>
+            <p align="center"><strong>ByteFlow</strong> is a simulation tool focused on studying MIPS architecture.  
+                It allows step-by-step execution of Assembly programs and offers features such as:</p> <!-- Descrição breve -->
+            <ul> <!-- Lista das funcionalidades -->
+                <li>Reading MIPS instructions and setting execution parameters.</li>
+                <li>Graphical visualization of memory and register states at each clock cycle.</li>
+                <li>Monitoring of the PC register and representation of the current instruction in binary or hexadecimal.</li>
+                <li>Calculation of the total execution time of the program.</li>
             </ul>
-            <p>O ByteFlow é projetado para auxiliar no entendimento do funcionamento interno de processadores MIPS, sendo
-                uma ferramenta útil para estudantes e profissionais da área de arquitetura de computadores.
-            </p>
-
+            <p>ByteFlow is designed to help understand the internal workings of MIPS processors, making it a useful tool for students and professionals in the field of computer architecture.</p> <!-- Explicação do objetivo -->
         </div>
+        <footer class="rodape"> <!-- Rodapé da página -->
+            <p>&copy; 2025 ByteFlow. All rights reserved.</p>
+        </footer>
     </div>
-    <footer class="rodape">
-        <p>&copy; 2025 ByteFlow. Todos os direitos reservados.</p>
-    </footer>
-    <!-- Inclusão do arquivo JS -->
+    <!-- Inclusão do arquivo JavaScript para o layout -->
     <script src="layout.js"></script>
 </body>
 </html>

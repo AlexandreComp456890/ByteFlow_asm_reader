@@ -1,53 +1,59 @@
 <!DOCTYPE html>
 <head>
-    <!-- Character encoding (supports special characters like ç, ã, etc.) -->
+    <!-- Codificação de caracteres para suportar caracteres especiais como ç, ã, etc. -->
     <meta charset="UTF-8" />
-    <!-- Page title shown in the browser tab -->
+    <!-- Título da página exibido na aba do navegador -->
     <title>ByteFlow Upload Code</title>
-    <!-- Main CSS file -->
+    <!-- Arquivo CSS principal -->
     <link rel="stylesheet" href="../Inicial/style.css" />
     <link rel="stylesheet" href="uploadCode.css">
-    <!-- Enables responsive design for mobile devices -->
+    <!-- Responsividade para dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Short description for search engines -->
+    <!-- Descrição curta para motores de busca -->
     <meta name="description" content="Intepretador assembly" />
-    <!-- Keywords for SEO -->
+    <!-- Palavras-chave para SEO -->
     <meta name="keywords" content="Intepretador assembly, assembly" />
-    <!-- Page authors -->
+    <!-- Autores da página -->
     <meta name="author" content="Yan Silva, Alexandre Rocha, Jhenifer Gomes" />
-    <!-- Favicon icon for the browser tab -->
+    <!-- Ícone da aba do navegador -->
     <link rel="icon" href="/caminho/do/favicon.ico" type="image/x-icon" />
-    <!-- Import Google Fonts -->
+    <!-- Importação da fonte Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
         <header class="header">
             <div class="logo">
+                <!-- Logo -->
                 <img src="../Inicial/logo.png" alt="logo"/>
                 <h2>ByteFlow</h2>
             </div>
             
             <nav>
-              <a href="../Inicial/index.html" class="nav-link" id="home">Início</a>
+              <!-- Links de navegação -->
+              <a href="../Inicial/index.html" class="nav-link" id="home">Home</a>
               <a href="uploadCode.html" class="nav-link" id="upload">Upload</a>
               <a href="../CodeEditor/codeEditor.html" class="nav-link" id="editor">Editor</a>
             </nav>
         </header>
         <div class="upload-container">
-            <h2>Upload do Arquivo</h2>
+            <!-- Título da seção de upload -->
+            <h2>upload file</h2>
 
-            <!-- Área de drop e clique -->
-            <div id="dropZone">Arraste o arquivo aqui ou clique para selecionar</div>
+            <!-- Área para arrastar arquivo ou clicar para selecionar -->
+            <div id="dropZone">Drag file here or click to select</div>
+            <!-- Input escondido para seleção de arquivo -->
             <input type="file" id="fileInput" accept=".asm,.txt" hidden />
-            
-            <button id="uploadButton">Enviar</button>
-
-            <!-- Conteúdo do arquivo -->
-            <pre id="fileContent" style="display: none;"></pre>
+            <!-- Botão para executar ação após upload -->
+            <button id="uploadButton">Run</button>
         </div>
+    
+        <footer class="rodape">
+            <!-- Rodapé com direitos reservados -->
+            <p>&copy; 2025 ByteFlow. All rights reserved.</p>
+        </footer>
     </div>
-    <!-- Inclusão do arquivo JS -->
+    <!-- Inclusão dos scripts JS -->
     <script src="../Inicial/layout.js"></script>
     <script src="uploadCode.js"></script>
 </body>
