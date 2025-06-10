@@ -1,3 +1,163 @@
-# ByteFlow_asm_reader
+<div style="background-color: rgb(32, 34, 44); padding: 30px; color: #f8f8f2; font-family: Arial, sans-serif;">
 
-ByteFlow is a prototype web application with the soul objectve of interpreting Assembly code. <br> 
+<h1 align="center" style="color:#92b5ff; background:#161720; padding:20px; border-radius:10px;">
+🚀 ByteFlow - Simulador Assembly MIPS
+</h1>
+
+<p align="center">
+Uma aplicação web para simular e interpretar Assembly MIPS com foco educacional.
+</p>
+
+<hr>
+
+## 🧾 Introdução
+
+O ByteFlow é uma ferramenta web desenvolvida para simular a execução de programas na arquitetura MIPS. Ele permite aos usuários executarem código Assembly passo a passo, acompanhando visualmente o estado dos registradores e da memória a cada ciclo de clock. O sistema oferece recursos como:
+- Leitura de instruções;
+- Visualização do registrador PC;
+- Exibição da instrução atual em hexadecimal;
+- Cálculo do tempo total de execução.
+
+Essa abordagem proporciona um ambiente didático e interativo voltado ao aprendizado do funcionamento interno de processadores MIPS. Com sua interface amigável, o ByteFlow atua como um recurso para estudantes da área de arquitetura de computadores.
+
+## 📌 Resumo
+
+O ByteFlow é um protótipo de aplicação web desenvolvido com o objetivo de interpretar visualmente código Assembly. Desenvolvido inteiramente com tecnologias de front-end como HTML, CSS e JavaScript, o projeto oferece uma interface gráfica onde o usuário pode digitar, salvar código, visualizar ou enviar código Assembly para ser manipulado.
+
+Ainda que não conte com um mecanismo de interpretação real das instruções Assembly, o ByteFlow representa um passo inicial importante para o desenvolvimento de uma plataforma completa. Sua estrutura modular inclui componentes como um editor de código, uma tela de upload de arquivos e uma página inicial com layout responsivo.
+
+O objetivo central do projeto é facilitar o aprendizado e a análise do Assembly por meio de uma ferramenta acessível, especialmente voltada para estudantes da computação de baixo nível.
+
+## 🛠️ Desenvolvimento
+
+O desenvolvimento e estrutura da aplicação está contida na pasta view/, subdividida em três módulos principais:
+
+- **`Inicial/`**: Contém a página de entrada do sistema com layout estruturado por meio de HTML e CSS, além de um script em JavaScript para geração dinâmica de conteúdo.
+
+- **`CodeEditor/`**: Inclui um editor de código com suporte para digitação de Assembly. Aqui é onde ocorre a maior parte da interação do usuário com o conteúdo.
+
+- **`UploadCode/`**: Responsável por fornecer uma interface para envio de arquivos contendo instruções Assembly.
+
+Além disso, o projeto traz um logotipo personalizado, estilizações responsivas e modularização clara dos arquivos. O código-fonte segue padrões de organização e é de fácil leitura, o que facilita a manutenção e contribuições de outros desenvolvedores.
+
+## ✅ Conclusão
+
+O ByteFlow é uma aplicação voltada ao ensino da linguagem Assembly MIPS, oferecendo uma interface clara e interativa que facilita a compreensão dos principais conceitos da arquitetura. Por meio de funcionalidades como editor de código, upload de arquivos e visualização de registradores, a ferramenta contribui para o aprendizado prático em um ambiente acessível via navegador. Sua estrutura modular e o uso de tecnologias web permitem uma navegação fluida, tornando o ByteFlow uma ferramenta útil para estudantes explorarem os fundamentos da programação em baixo nível e da arquitetura de computadores.
+
+---
+
+## 📄 Páginas da Aplicação e Suas Funcionalidades
+
+### 1. Página Inicial
+
+- Apresentação do projeto
+- Navegação para Upload e Editor
+- Informações principais sobre o ByteFlow
+<img src="../../assets/logo.png" alt="Logo do Projeto" width="200"/>
+
+### 2. Página de Upload
+
+- Suporte a Drag & Drop
+- Preview do arquivo
+- Leitura de arquivos `.asm`/`.txt`
+
+### 3. Página do Editor
+
+- Editor CodeMirror com tema Dracula
+- Botões:
+  - Save → baixa o arquivo `.asm`
+  - Submit → armazena conteúdo para simulação
+  - Run → (futuramente implementado)
+
+## ✨ Funcionalidades Principais
+
+<ul>
+  <li>🎯 Editor de Código Assembly Interativo</li>
+  <li>📂 Upload de Arquivos <code>.asm</code> ou <code>.txt</code></li>
+  <li>⚙️ Simulação da execução MIPS com recursos planejados:
+    <ul>
+      <li>Leitura e execução de instruções</li>
+      <li>Visualização do estado da memória e registradores</li>
+      <li>Monitoramento do PC (Program Counter)</li>
+      <li>Representação hexadecimal da instrução</li>
+      <li>Cálculo de tempo de execução</li>
+    </ul>
+  </li>
+  <li>💾 Salvar / Editar Código</li>
+  <li>🧭 Interface amigável com navegação clara</li>
+</ul>
+
+## 🛠️ Tecnologias Utilizadas
+
+<ul>
+  <li><span style="color:#92b5ff">HTML5</span></li>
+  <li><span style="color:#92b5ff">CSS3</span></li>
+  <li><span style="color:#92b5ff">JavaScript ES6+</span></li>
+  <li><span style="color:#92b5ff">TypeScript</span></li>
+  <li><span style="color:#92b5ff">CodeMirror</span></li>
+</ul>
+
+## 🎨 Paleta de Cores
+
+
+```css
+--header-bg:      #161720;        /* Fundo do Cabeçalho */
+--page-bg:        rgb(32, 34, 44);/* Fundo da Página */
+--text-light:     #f8f8f2;        /* Texto Claro */
+--highlight-pink: #92b5ff;        /* Destaques */
+```
+
+## 📂 Estrutura do Projeto
+
+```bash
+ByteFlow_asm_reader/
+├── README.md
+└── view/
+    ├── Inicial/
+    │   ├── index.html
+    │   ├── style.css
+    │   └── layout.js
+    ├── CodeEditor/
+    │   ├── codeEditor.html
+    │   ├── codeEditor.css
+    │   └── codeEditor.js
+    └── UploadCode/
+        ├── uploadCode.html
+        ├── uploadCode.css
+        └── uploadCode.js
+```
+
+## 📄 Páginas da Aplicação e Suas Funcionalidades
+
+### 1. Página Inicial
+
+- Apresentação do projeto
+- Navegação para Upload e Editor
+- Informações principais sobre o ByteFlow
+
+### 2. Página de Upload
+
+- Suporte a Drag & Drop
+- Preview do arquivo
+- Leitura de arquivos `.asm`/`.txt`
+
+### 3. Página do Editor
+
+- Editor CodeMirror com tema Dracula
+- Botões:
+  - Save → baixa o arquivo `.asm`
+  - Submit → armazena conteúdo para simulação
+  - Run → (futuramente implementado)
+
+## 🚀 Como Executar
+
+1. Baixe os arquivos
+2. Abra `view/Inicial/index.html` no navegador
+
+## 👨‍💻 Autores
+
+- <a href="https://github.com/YanSilva22"> Yan Silva </a>  
+- <a href="https://github.com/AlexandreComp456890"> Alexandre Rocha </a>  
+- <a href="https://github.com/jhenifersgomes209"> Jhenifer Gomes </a>
+
+</div>
