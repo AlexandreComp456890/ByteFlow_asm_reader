@@ -1,6 +1,4 @@
-<div style="background-color: rgb(32, 34, 44); padding: 30px; color: #f8f8f2; font-family: Arial, sans-serif;">
-
-<h1 align="center" style="color:#92b5ff; background:#161720; padding:20px; border-radius:10px;">
+<h1 align="center">
 🚀 ByteFlow - Simulador Assembly MIPS
 </h1>
 
@@ -9,6 +7,23 @@ Uma aplicação web para simular e interpretar Assembly MIPS com foco educaciona
 </p>
 
 <hr>
+
+## 📚 Sumário
+
+- [🧾 Introdução](#-introdução)  
+- [📌 Resumo](#-resumo)  
+- [🛠️ Desenvolvimento](#-desenvolvimento)  
+- [✅ Conclusão](#-conclusão) 
+- [📄 Páginas da Aplicação e Suas Funcionalidades](#-páginas-da-aplicação-e-suas-funcionalidades)  
+  - [1. Página Inicial](#1-página-inicial)  
+  - [2. Página de Upload](#2-página-de-upload)  
+  - [3. Página do Editor](#3-página-do-editor)  
+- [✨ Funcionalidades Principais](#-funcionalidades-principais)  
+- [🛠️ Tecnologias Utilizadas](#-tecnologias-utilizadas)  
+- [🎨 Paleta de Cores](#-paleta-de-cores)  
+- [📂 Estrutura do Projeto](#-estrutura-do-projeto)   
+- [🚀 Como Executar](#-como-executar)  
+- [👨‍💻 Autores](#-autores)  
 
 ## 🧾 Introdução
 
@@ -53,13 +68,14 @@ O ByteFlow é uma aplicação voltada ao ensino da linguagem Assembly MIPS, ofer
 - Apresentação do projeto
 - Navegação para Upload e Editor
 - Informações principais sobre o ByteFlow
-<img src="../../assets/logo.png" alt="Logo do Projeto" width="200"/>
+<img src="assets/Home.png" alt="Logo do Projeto" width="200"/>
 
 ### 2. Página de Upload
 
 - Suporte a Drag & Drop
 - Preview do arquivo
 - Leitura de arquivos `.asm`/`.txt`
+<img src="assets/Upload.png" alt="Logo do Projeto" width="200"/>
 
 ### 3. Página do Editor
 
@@ -68,6 +84,7 @@ O ByteFlow é uma aplicação voltada ao ensino da linguagem Assembly MIPS, ofer
   - Save → baixa o arquivo `.asm`
   - Submit → armazena conteúdo para simulação
   - Run → (futuramente implementado)
+<img src="assets/Editor.png" alt="Logo do Projeto" width="200"/>
 
 ## ✨ Funcionalidades Principais
 
@@ -127,28 +144,6 @@ ByteFlow_asm_reader/
         └── uploadCode.js
 ```
 
-## 📄 Páginas da Aplicação e Suas Funcionalidades
-
-### 1. Página Inicial
-
-- Apresentação do projeto
-- Navegação para Upload e Editor
-- Informações principais sobre o ByteFlow
-
-### 2. Página de Upload
-
-- Suporte a Drag & Drop
-- Preview do arquivo
-- Leitura de arquivos `.asm`/`.txt`
-
-### 3. Página do Editor
-
-- Editor CodeMirror com tema Dracula
-- Botões:
-  - Save → baixa o arquivo `.asm`
-  - Submit → armazena conteúdo para simulação
-  - Run → (futuramente implementado)
-
 ## 🚀 Como Executar
 
 1. Baixe os arquivos
@@ -159,5 +154,3 @@ ByteFlow_asm_reader/
 - <a href="https://github.com/YanSilva22"> Yan Silva </a>  
 - <a href="https://github.com/AlexandreComp456890"> Alexandre Rocha </a>  
 - <a href="https://github.com/jhenifersgomes209"> Jhenifer Gomes </a>
-
-</div>
