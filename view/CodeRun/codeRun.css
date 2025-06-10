@@ -1,0 +1,136 @@
+.tabela-section {
+    margin: 10px 0 20px 20px;
+    padding: 20px;
+    width: 95%;
+    background-color: #1e1f29;
+    border: 1px solid #2c2f3f;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: stretch;
+    box-sizing: border-box;
+    height: auto; /* Altura automática conforme o conteúdo */
+    min-height: 600px;
+}
+
+#componentes > h2 {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    color: #f8f8f2;
+    font-size: 28px;
+}
+
+.tabelas-esquerda > h2,
+.registradores-container > h2 {
+    margin-top: 0 !important;
+    margin-bottom: 13px;
+    padding: 5px 0;
+    text-align: center;
+    color: #f8f8f2;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.tabelas-esquerda {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 60%;
+    gap: 20px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.registradores-container {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 35%;
+    box-sizing: border-box;
+    overflow: hidden;
+    align-items: flex-start;
+    height: auto; /* Permite crescer com o conteúdo */
+}
+
+.scroll-tabela {
+    max-height: 210px;
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 100%;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.scroll-tabela.tabela-registradores {
+    max-height: 300px; 
+    overflow-y: auto;
+    overflow-x: auto;
+    border-radius: 6px;
+    box-sizing: border-box;
+    margin-bottom: 15px;
+}
+
+.tabela-execucao,
+.tabela-memoria,
+.tabela-registradores {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    background-color: #282a36;
+    color: #f8f8f2;
+    font-family: 'Roboto', sans-serif;
+    table-layout: fixed;
+    word-break: break-word;
+    font-size: 12px;
+    box-sizing: border-box;
+}
+
+.tabela-execucao thead th,
+.tabela-memoria thead th,
+.tabela-registradores thead th {
+    position: sticky;
+    top: 0;
+    background-color: #161720;
+    z-index: 2;
+}
+
+.tabela-execucao th,
+.tabela-memoria th,
+.tabela-registradores th,
+.tabela-execucao td,
+.tabela-memoria td,
+.tabela-registradores td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.tabela-execucao tbody tr:nth-child(even),
+.tabela-memoria tbody tr:nth-child(even),
+.tabela-registradores tbody tr:nth-child(even) {
+    background-color: #20222e;
+}
+
+.tabela-execucao tbody tr:hover,
+.tabela-memoria tbody tr:hover,
+.tabela-registradores tbody tr:hover {
+    background-color: #3a3d56;
+}
+
+/* Estilo dos parágrafos informativos abaixo da tabela de registradores */
+.info-p {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 6px 12px;
+    color: #f8f8f2;
+    background-color: #2c2f3f;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    box-sizing: border-box;
+}

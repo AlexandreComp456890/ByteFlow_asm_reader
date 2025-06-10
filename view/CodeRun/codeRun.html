@@ -1,22 +1,10 @@
 <!DOCTYPE html>
 <head>
-    <!-- Character encoding (supports special characters like ç, ã, etc.) -->
     <meta charset="UTF-8" />
-    <!-- Page title shown in the browser tab -->
     <title>ByteFlow Code Editor</title>
-    <!-- Enables responsive design for mobile devices -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Main CSS file -->
     <link rel="stylesheet" href="../Inicial/style.css" />
-    <!-- Main CSS file -->
-    <!-- CodeMirror base CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.css" />
-    <!-- CodeMirror theme (Dracula) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/theme/dracula.css" />
-    <!-- CodeMirror core script -->
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.js"></script>
-    <!-- CodeMirror mode for Assembly (GAS syntax) -->
-    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/gas/gas.js"></script>
+    <link rel="stylesheet" href="../CodeRun/codeRun.css" />
 </head>
 <body>
     <div class="container">
@@ -31,11 +19,107 @@
                 <a href="codeEditor.html" class="nav-link" id="editor">Editor</a>
             </nav>
         </header>
+        
+        <div id="componentes">    
+            <h2>Interpreter</h2>  
+            <section class="tabela-section">
+                <div class="tabelas-esquerda">
+                    <h2>Execution</h2>
+                    <div class="scroll-tabela">
+                        <table id="execucaoTabela" class="tabela-execucao">
+                            <thead>
+                                <tr>
+                                    <th>PC</th>
+                                    <th>type</th>
+                                    <th>Encoding</th>
+                                    <th>Thread</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <h2>Memories</h2>
+                    <div class="scroll-tabela">
+                        <table id="memoriaTabela" class="tabela-memoria">
+                            <thead>
+                                <tr>
+                                    <th>Address</th>
+                                    <th>Value + 0</th>
+                                    <th>Value + 4</th>
+                                    <th>Value + 8</th>
+                                    <th>Value + 0C</th>
+                                    <th>Value + 10</th>
+                                    <th>Value + 14</th>
+                                    <th>Value + 18</th>
+                                    <th>Value + 1C</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="registradores-container">
+                    <h2>Registrars</h2>
+                    <div class="scroll-tabela tabela-registradores">
+                        <table id="registradoresTabela" class="tabela-registradores">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Number</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 <tr><td>$at</td><td>1</td><td></td></tr>
+                                <tr><td>$v0</td><td>2</td><td></td></tr>
+                                <tr><td>$v1</td><td>3</td><td></td></tr>
+                                <tr><td>$a0</td><td>4</td><td></td></tr>
+                                <tr><td>$a1</td><td>5</td><td></td></tr>
+                                <tr><td>$a2</td><td>6</td><td></td></tr>
+                                <tr><td>$a3</td><td>7</td><td></td></tr>
+                                <tr><td>$t0</td><td>8</td><td></td></tr>
+                                <tr><td>$t1</td><td>9</td><td></td></tr>
+                                <tr><td>$t2</td><td>10</td><td></td></tr>
+                                <tr><td>$t3</td><td>11</td><td></td></tr>
+                                <tr><td>$t4</td><td>12</td><td></td></tr>
+                                <tr><td>$t5</td><td>13</td><td></td></tr>
+                                <tr><td>$t6</td><td>14</td><td></td></tr>
+                                <tr><td>$t7</td><td>15</td><td></td></tr>
+                                <tr><td>$s0</td><td>16</td><td></td></tr>
+                                <tr><td>$s1</td><td>17</td><td></td></tr>
+                                <tr><td>$s2</td><td>18</td><td></td></tr>
+                                <tr><td>$s3</td><td>19</td><td></td></tr>
+                                <tr><td>$s4</td><td>20</td><td></td></tr>
+                                <tr><td>$s5</td><td>21</td><td></td></tr>
+                                <tr><td>$s6</td><td>22</td><td></td></tr>
+                                <tr><td>$s7</td><td>23</td><td></td></tr>
+                                <tr><td>$t8</td><td>24</td><td></td></tr>
+                                <tr><td>$t9</td><td>25</td><td></td></tr>
+                                <tr><td>$k0</td><td>26</td><td></td></tr>
+                                <tr><td>$k1</td><td>27</td><td></td></tr>
+                                <tr><td>$gp</td><td>28</td><td></td></tr>
+                                <tr><td>$sp</td><td>29</td><td></td></tr>
+                                <tr><td>$fp</td><td>30</td><td></td></tr>
+                                <tr><td>$ra</td><td>31</td><td></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Parágrafos dentro do container -->
+                    <p class="info-p">PC:</p>
+                    <p class="info-p">Tempo de execução na linha:</p>
+                    <p class="info-p">Instrução atual:</p>
+                    <p class="info-p">Tipo de instrução:</p>
+                </div>
+            </section>
+        </div>
+                
         <footer class="rodape">
             <p>&copy; 2025 ByteFlow. All rights reserved.</p>
         </footer>
-        <!-- Inclusão do arquivo JS -->
+
         <script src="../Inicial/layout.js"></script>
+        <script src="../CodeRun/codeRun.js"></script>
     </div>
 </body>
 </html>
