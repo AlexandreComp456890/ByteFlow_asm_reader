@@ -1,17 +1,18 @@
-/* Reset básico */
+/* Reset básico para remover margens e paddings padrão e ajustar box-sizing */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Remove margens e paddings do body e container, define fonte Roboto */
 body, .container {
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif;
 }
 
-/* Container centralizado */
+/* Container centralizado com flexbox, colunas alinhadas no centro */
 .upload-container {
     margin-top: 40px;
     display: flex;
@@ -20,37 +21,38 @@ body, .container {
     justify-content: center;
 }
 
-/* Título centralizado */
+/* Título centralizado e com margem inferior */
 .upload-container h2 {
     margin-bottom: 30px;
     text-align: center;
 }
 
-/* Área de drop personalizada */
+/* Área para drop de arquivo estilizada com borda tracejada e fundo escuro */
 #dropZone {
     width: 60%;
     height: 150px;
     border: 2px dashed #ccc;
     border-radius: 10px;
-    background-color: #282a36; /* mesmo fundo do CodeMirror com tema Dracula */
+    background-color: #282a36; /* Fundo parecido com tema Dracula do CodeMirror */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
     color: #ccc;
-    cursor: pointer;
+    cursor: pointer;           /* Cursor pointer para indicar área clicável */
     margin-bottom: 20px;
     text-align: center;
     padding: 20px;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Transições suaves */
 }
 
+/* Estilo aplicado quando um arquivo está sobre a área de drop */
 #dropZone.dragover {
-    background-color: #383a59;  /* tom um pouco mais claro para o hover */
-    border-color: #6a95ff;
+    background-color: #383a59;  /* Fundo mais claro ao arrastar arquivo */
+    border-color: #6a95ff;      /* Borda azul clara */
 }
 
-/* Botão de envio (id=uploadButton) */
+/* Estilo do botão de envio */
 #uploadButton {
     padding: 10px 20px;
     font-size: 16px;
@@ -59,26 +61,27 @@ body, .container {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    background-color: var(--highlight-pink, #ff90b3); /* fallback se a variável não existir */
+    background-color: var(--highlight-pink, #ff90b3); /* Usa variável com fallback */
     color: #000;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease; /* Transição suave no hover */
     margin-top: 10px;
 }
 
+/* Cor do botão muda ao passar o mouse */
 #uploadButton:hover {
     background-color: #6a95ff;
 }
 
-/* Pré-visualização do conteúdo do arquivo */
+/* Área para mostrar conteúdo do arquivo, inicialmente oculta */
 #fileContent {
-    display: none;
+    display: none;              /* Esconde inicialmente */
     margin-top: 30px;
     width: 60%;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
-    font-family: monospace;
+    font-family: monospace;    /* Fonte monoespaçada para código */
     font-size: 14px;
-    white-space: pre-wrap;
-    background-color: #f9f9f9;
+    white-space: pre-wrap;     /* Mantém quebras de linha */
+    background-color: #f9f9f9; /* Fundo claro para contraste */
 }

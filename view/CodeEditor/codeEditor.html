@@ -1,52 +1,62 @@
 <!DOCTYPE html>
 <head>
-    <!-- Character encoding (supports special characters like ç, ã, etc.) -->
+    <!-- Define o conjunto de caracteres como UTF-8 (suporta acentuação, cedilha, etc.) -->
     <meta charset="UTF-8" />
-    <!-- Page title shown in the browser tab -->
+    <!-- Título da página exibido na aba do navegador -->
     <title>ByteFlow Code Editor</title>
-    <!-- Enables responsive design for mobile devices -->
+    <!-- Configura o layout para ser responsivo em dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- Main CSS file -->
+    <!-- Importa o CSS principal do projeto -->
     <link rel="stylesheet" href="../Inicial/style.css" />
-    <!-- Main CSS file -->
+    <!-- Importa o CSS específico do editor -->
     <link rel="stylesheet" href="codeEditor.css" />
-    <!-- CodeMirror base CSS -->
+    <!-- Importa o CSS base do CodeMirror -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.css" />
-    <!-- CodeMirror theme (Dracula) -->
+    <!-- Importa o tema "Dracula" para o CodeMirror -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/theme/dracula.css" />
-    <!-- CodeMirror core script -->
+    <!-- Importa o script principal do CodeMirror -->
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/lib/codemirror.js"></script>
-    <!-- CodeMirror mode for Assembly (GAS syntax) -->
+    <!-- Importa o modo de sintaxe Assembly (GAS) para o CodeMirror -->
     <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.13/mode/gas/gas.js"></script>
 </head>
-<body>
-    <div class="container">
-            <header class="header">
-                <div class="logo">
-                    <img src="../Inicial/logo.png" alt="logo"/>
-                    <h2>ByteFlow</h2>
-                </div>
-                <nav>
-                    <a href="../Inicial/index.html" class="nav-link" id="home">Início</a>
-                    <a href="../UploadCode/uploadCode.html" class="nav-link" id="upload">Upload</a>
-                    <a href="codeEditor.html" class="nav-link" id="editor">Editor</a>
-                </nav>
-            </header>
-        <!-- Inclusão do arquivo JS -->
-        <script src="../Inicial/layout.js"></script>
 
+<body>
+    <!-- Container principal da página -->
+    <div class="container">
+        <!-- Cabeçalho com logo e navegação -->
+        <header class="header">
+            <div class="logo">
+                <!-- Logo -->
+                <img src="../../assets/logo.png" alt="logo"/>
+                <h2>ByteFlow</h2>
+            </div>
+            <!-- Links de navegação -->
+            <nav>
+                <a href="../Inicial/index.html" class="nav-link" id="home">Home</a>
+                <a href="../UploadCode/uploadCode.html" class="nav-link" id="upload">Upload</a>
+                <a href="codeEditor.html" class="nav-link" id="editor">Editor</a>
+            </nav>
+        </header>
+        <!-- Área do editor de código -->
         <div id="codeEditor">
-            <h2>Digite o codigo Assembly</h2>
-            <!-- Textarea where the user will type Assembly code -->
+            <h2>Type your Assembly code</h2>
+            <!-- Campo onde o usuário digita o código Assembly -->
             <textarea id="assemblyCode"></textarea>
             <br>
+            <!-- Botões de ação -->
             <div class="button-group">
-                <button id="saveCode">Save</button>
-                <button id="submitCode">Submit</button>
+                <button id="saveCode">generate file</button>
                 <button id="runCode">Run</button>
             </div>
-            <script src="codeEditor.js"></script>
         </div>
+        <!-- Rodapé da página -->
+        <footer class="rodape">
+            <p>&copy; 2025 ByteFlow. All rights reserved.</p>
+        </footer>
     </div>
+    <!-- Script adicional para layout da interface -->
+    <script src="../Inicial/layout.js"></script>
+    <!-- Importa o script que configura o editor e os botões -->
+    <script src="codeEditor.js"></script>
 </body>
 </html>

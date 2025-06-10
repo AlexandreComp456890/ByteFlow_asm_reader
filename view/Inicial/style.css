@@ -1,143 +1,145 @@
-/* Reset básico */
+/* Reset básico para remover margens, paddings e ajustar box-sizing */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-/* Cores do projeto */
+
+/* Variáveis CSS para cores usadas no projeto */
 :root {
-    --header-bg: #161720;
-    --page-bg: rgb(32, 34, 44);
-    --text-light: #f8f8f2;
-    --highlight-pink: #92b5ff;
+    --header-bg: #161720;          /* Cor de fundo do cabeçalho */
+    --page-bg: rgb(32, 34, 44);    /* Cor de fundo da página */
+    --text-light: #f8f8f2;         /* Cor clara para textos */
+    --highlight-pink: #92b5ff;     /* Cor destaque rosa */
 }
   
 body {
-    background-color: var(--page-bg); /* fundo do editor ou conteúdo principal */
-    font-family: 'Roboto', sans-serif;
-    color: var(--text-light);
-    align-items: center;
+    background-color: var(--page-bg); /* Fundo principal da página */
+    font-family: 'Roboto', sans-serif; /* Fonte usada */
+    color: var(--text-light);          /* Cor do texto */
+    align-items: center;               /* Alinhamento vertical */
 }
 
-/* Header com cor distinta */
+/* Estilo do cabeçalho com cor de fundo e espaçamento */
 header {
     background-color: var(--header-bg);
     padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex;                    /* Usa flexbox */
+    justify-content: space-between;  /* Espaço entre itens */
+    align-items: center;              /* Alinha verticalmente */
 }
 
+/* Estiliza a área do logo com alinhamento e espaçamento */
 .logo {
     display: flex;
     align-items: center; 
-    gap: 10px; 
+    gap: 10px;                       /* Espaço entre imagem e texto */
 }
 
+/* Ajusta tamanho da imagem do logo */
 .logo img {
     height: 80px; 
-    width: auto;
+    width: auto;                    /* Mantém proporção */
 }
 
+/* Estilo do texto do logo */
 .logo h2 {
     font-size: 30px; 
     font-weight: 500; 
     font-family: 'Roboto', sans-serif; 
     color: var(--text-light); 
-    margin: 0; 
+    margin: 0;                     /* Remove margem padrão */
 }
 
-/* Navegação */
+/* Navegação com flexbox e espaçamento entre links */
 nav {
     display: flex;
     gap: 30px;
 }
 
-/* Estilo dos links do menu */
+/* Estilo básico dos links do menu */
 .nav-link {
-    position: relative;
+    position: relative;            /* Para posicionar o risquinho */
     color: var(--text-light);
     text-decoration: none;
     font-size: 30px;
     font-weight: 500;
     padding: 10px 5px;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease;  /* Transição suave para cor */
 }
 
-/* Risquinho que vai aparecer embaixo do link */
+/* Risquinho que aparece abaixo do link (inicialmente invisível) */
 .nav-link::after {
     content: "";
     position: absolute;
-    left: 50%;  /* Começa no meio */
-    bottom: 0;
-    transform: translateX(-50%) scaleX(0);  /* Inicia com escala 0 */
-    transform-origin: center;  /* Faz o efeito de crescer do centro */
-    width: 100%;  /* Largura total do link */
-    height: 2px;
+    left: 50%;                    /* Começa no centro horizontal */
+    bottom: 0;                   /* Na parte de baixo do link */
+    transform: translateX(-50%) scaleX(0);  /* Esconde com escala 0 */
+    transform-origin: center;    /* Cresce a partir do centro */
+    width: 100%;                 /* Largura total do link */
+    height: 2px;                 /* Altura do risquinho */
     background-color: var(--highlight-pink);
-    transition: transform 0.35s ease;  /* Transição suave */
+    transition: transform 0.35s ease;  /* Transição suave do efeito */
 }
 
-/* Quando o link for sobrevoado */
+/* Ao passar o mouse, risquinho cresce para ficar visível */
 .nav-link:hover::after {
-    transform: translateX(-50%) scaleX(1);  /* Expande para a largura total do link */
+    transform: translateX(-50%) scaleX(1); /* Expande o risquinho */
 }
 
-/* Link ativo (quando estiver na página atual) */
+/* Link ativo (página atual) com risquinho sempre visível e azul */
 .nav-link.active::after {
-    transform: translateX(-50%) scaleX(1);  /* Também expande para a largura total */
-    background-color: #63b3ed; /* Azul claro ou a cor que preferir */
+    transform: translateX(-50%) scaleX(1); /* Risquinho expandido */
+    background-color: #63b3ed; /* Cor azul clara */
 }
 
-/* Estilos para a seção de introdução */
+/* Estilos para a seção inicial da página */
 .inicio {
-    max-width: 950px;
-    margin: 35px auto;
+    max-width: 950px;             /* Largura máxima da área */
+    margin: 35px auto;            /* Centraliza vertical e horizontal */
     padding: 20px 20px;
-    background-color: #b6b0b0;
-    border: 1px solid #211f1f;
-    border-radius: 8px;
+    background-color: #b6b0b0;   /* Fundo cinza claro */
+    border: 1px solid #211f1f;   /* Borda escura */
+    border-radius: 8px;           /* Cantos arredondados */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 20px;
-    color: #1f1e1e;
-    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.05);
+    font-size: 20px;              /* Tamanho da fonte */
+    color: #1f1e1e;              /* Cor do texto */
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.05); /* Sombra suave */
 }
  
-/* Estilos para o título principal */
+/* Título principal com centralização e espaçamento */
 .inicio h1 {
     text-align: center;
     font-size: 2em;
     margin-bottom: 20px;
-    color: rgb(41, 36, 36);
+    color: rgb(41, 36, 36);      /* Cor escura */
 }
 
-/* Estilos para os parágrafos */
+/* Parágrafos justificados e com espaçamento entre linhas */
 .inicio p {
     text-align: justify;
     line-height: 1.63;
-    margin-bottom: 15px;
+    margin-bottom: 15px;         /* Espaço abaixo do parágrafo */
 }
 
-/* Estilos para a lista não ordenada*/
+/* Lista com marcador de disco e recuo na esquerda */
 .inicio ul {
     list-style-type: disc;
     padding-left: 20px;
     margin-bottom: 15px;
 }
 
-/* Estilos para os itens da lista */
+/* Espaço entre itens da lista */
 .inicio li {
     margin-bottom: 10px;
 }
 
-/* Estilos para o rodapé - "Todos os direitos reservados" */
+/* Estilo do rodapé com centralização e fonte serifada */
 .rodape {
     text-align: center;
     font-family: "Times New Roman", Times, serif;
     font-size: 16px;
-    color: #666;
+    color: #666;                 /* Cor cinza para texto menos destacado */
     padding: 20px 0;
     margin-top: 10px;
 }
-  
-  

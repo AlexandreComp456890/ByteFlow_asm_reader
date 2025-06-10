@@ -1,80 +1,79 @@
-/* Reset básico */
+/* Reset básico de margens e paddings para todos os elementos */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Faz com que paddings e bordas sejam incluídos na largura total */
 }
 
+/* Remove margens/paddings do body e do container principal */
 body, .container {
     margin: 0;
     padding: 0;
 }
 
+/* Estilo da seção principal do editor de código */
 #codeEditor {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    margin-top: 30px; /* Espaço superior */
+    display: flex; /* Layout flexível */
+    flex-direction: column; /* Elementos empilhados na vertical */
+    justify-content: center; /* Centraliza verticalmente (não afeta muito no eixo principal aqui) */
+    align-items: center; /* Centraliza horizontalmente */
 }
 
+/* Estilo do título dentro da área do editor */
 #codeEditor h2 {
-    margin-top: 0px;
+    margin-top: 0px; /* Remove margem superior */
 }
-  
-/* Estilo do CodeMirror */
+
+/* Estilo do editor CodeMirror */
 .CodeMirror {
-    height: 40%;
-    width: 60%;
-    margin-top: 20px;
-    border: 1px solid #ccc;
-    font-family: monospace;
-    font-size: 14px;
-    padding: 20px ;
-    border-radius: 10px;
+    height: 40%; /* Altura relativa da área de código */
+    width: 60%;  /* Largura relativa da área de código */
+    margin-top: 20px; /* Espaço acima do editor */
+    border: 1px solid #ccc; /* Borda cinza clara */
+    font-family: monospace; /* Fonte monoespaçada (como em editores de código) */
+    font-size: 14px; /* Tamanho da fonte */
+    padding: 20px; /* Espaçamento interno */
+    border-radius: 10px; /* Bordas arredondadas */
 }
+
+/* Container dos botões */
 .button-group {
-    margin-top: 20px;
-    display: flex;
-    gap: 15px;
+    margin-top: 20px; /* Espaço acima do grupo de botões */
+    display: flex; /* Layout flexível */
+    gap: 15px; /* Espaçamento entre os botões */
 }
 
+/* Estilo base para todos os botões */
 .button-group button {
-    padding: 10px 20px;
-    font-size: 16px;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    padding: 10px 20px; /* Espaçamento interno */
+    font-size: 16px; /* Tamanho do texto */
+    font-family: 'Roboto', sans-serif; /* Fonte usada nos botões */
+    font-weight: 500; /* Peso da fonte (meio negrito) */
+    border: none; /* Remove borda padrão */
+    border-radius: 8px; /* Bordas arredondadas */
+    cursor: pointer; /* Muda o cursor ao passar por cima */
+    transition: background-color 0.3s ease; /* Transição suave ao mudar cor de fundo */
 }
 
-/* Estilo do botão salvar */
+/* Estilo específico do botão de salvar */
 #saveCode {
-    background-color: var(--highlight-pink);
-    color: #000;
+    background-color: var(--highlight-pink); /* Cor de fundo vinda da variável CSS */
+    color: #000; /* Texto preto */
 }
 
+/* Efeito hover (passar o mouse) no botão de salvar */
 #saveCode:hover {
-    background-color: #6a95ff;
+    background-color: #6a95ff; /* Muda para azul claro ao passar o mouse */
 }
 
-/* Estilo do botão run */
+/* Estilo específico do botão de rodar */
 #runCode {
-    background-color: var(--highlight-pink);
-    color: #000;
+    background-color: var(--highlight-pink); /* Usa a mesma cor inicial do salvar */
+    color: #000; /* Texto preto */
 }
 
+/* Efeito hover no botão de rodar */
 #runCode:hover {
-    background-color: #6a95ff;
-}
-/* Estilo do botão submit */
-#submitCode {
-    background-color: var(--highlight-pink);
-    color: #000;
-}
-
-#submitCode:hover {
-    background-color: #6a95ff;
+    background-color: #6a95ff; /* Mesmo efeito visual ao passar o mouse */
 }
