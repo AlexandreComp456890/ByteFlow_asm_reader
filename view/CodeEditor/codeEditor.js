@@ -1,5 +1,8 @@
+import { Interpreter } from "../../js/Runtime/Interpreter.js";
+
 // Variável global para armazenar a instância do editor CodeMirror
 let editor;
+const interpreter = new Interpreter();
 
 // Aguarda o carregamento completo do DOM antes de executar o código
 document.addEventListener("DOMContentLoaded", function () {
@@ -29,8 +32,8 @@ function salvarCodigo() {
 
         // Gera uma URL temporária para o blob
         const url = URL.createObjectURL(blob);
-
         // Cria um link <a> para download do arquivo
+
         const link = document.createElement("a");
         link.download = "codigo.asm"; // Nome do arquivo a ser salvo
         link.href = url;
@@ -49,11 +52,12 @@ function salvarCodigo() {
 // Função para rodar o código digitado
 function rodarCodigo() {
     // Obtém e remove espaços extras do conteúdo digitado
-    const conteudo = editor.getValue().trim();
-
+    let conteudo = editor.getValue().trim();
+    console.log(conteudo);
     // Verifica se há conteúdo
     if (conteudo) {
         // Abre uma nova janela com o simulador ou executor
+        localStorage.setItem("assemblyCode", conteudo);
         abrirNovaJanela();
     } else {
         // Alerta o usuário caso o editor esteja vazio

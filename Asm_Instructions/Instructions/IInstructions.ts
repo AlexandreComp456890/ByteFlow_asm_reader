@@ -19,8 +19,24 @@ export interface IInstruction {
     /**
      * @description Returns the 32-bit word of the instruction.
      * Used for instruction encoding to machine code.
+     * @param params optional atributes used to encode MIPS assembly
      * @return number
      */
     encondingForTheHolyMachine(params :
-        {registers?: Record<string,number>, rs?: string, rt?: string, rd?: string, shamt?: number, immediate?: number, target?: number}): number | number[];
+        {
+            registers?: Record<string,number>, 
+            rs?: string, 
+            rt?: string, 
+            rd?: string, 
+            shamt?: number, 
+            immediate?: number, 
+            target?: number
+        }
+    ): number | number[];
+
+    /**
+     * @description Returns the type of instruction being applied (Type R, I or J)
+     * @return string
+     */
+    instructionType(): string 
 }

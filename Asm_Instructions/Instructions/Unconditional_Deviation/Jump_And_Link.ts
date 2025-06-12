@@ -3,7 +3,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
 export class Jump_And_Link implements IInstruction {
     //lw $t0, 
-    private regex = /^\s*jal\s+(\w+)$/i
+    private regex = /^\s*(?:(\w+):)?\s*jal\s+(\w+)\s*(?:#\s*(.*))?$/i
 
     match(line: string): boolean{
         return this.regex.test(line);
@@ -13,7 +13,7 @@ export class Jump_And_Link implements IInstruction {
         const match = this.regex.exec(context.currentLine);
         if (!match) return;
 
-        const [, dest] = match;
+        const [, , dest] = match;
     
         const address = context.literals[dest];
         context.registers.ra = ExecutionContext.programCounter + 4;
@@ -21,13 +21,11 @@ export class Jump_And_Link implements IInstruction {
         if (address !== undefined) {
             // Update the global program counter to jump to the label
             ExecutionContext.programCounter = address - 4;
-            console.log(`\nJumping to label ${dest} at ${ExecutionContext.fixToHex(address)}. $ra = ${ExecutionContext.fixToHex(context.registers.ra)}\n`);
-            console.log(`${ExecutionContext.fixToHex(
-                this.encondingForTheHolyMachine({target: address >>> 2}))}\n`
-            );
+            context.encodedInst = this.encondingForTheHolyMachine({target: address >>> 2})
+            
             return;
         }
-        console.warn(`\nLabel ${dest} not found. Runtime error.\n`);
+        console.error(`\nLabel ${dest} not found. Runtime error.\n`);
         
     }
         
@@ -37,5 +35,9 @@ export class Jump_And_Link implements IInstruction {
         const target = (params.target & 0x03FFFFFF).toString(2).padStart(26, '0');
 
         return parseInt(opcode + target, 2);
+    }
+
+    instructionType(): string {
+        return "J";
     }
 }

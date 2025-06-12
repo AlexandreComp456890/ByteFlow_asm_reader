@@ -3,7 +3,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
 export class Set_On_Less_Than implements IInstruction {
     //lw $t0, 
-    private regex = /^\s*slt\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*$/i
+    private regex = /^\s*(?:(\w+):)?\s*slt\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*(?:#\s*(.*))?$/i
 
     match(line: string): boolean{
         return this.regex.test(line);
@@ -13,7 +13,7 @@ export class Set_On_Less_Than implements IInstruction {
         const match = this.regex.exec(context.currentLine);
         if (!match) return;
 
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
         
@@ -24,7 +24,7 @@ export class Set_On_Less_Than implements IInstruction {
             console.log(`\n${val1} < ${val2} = false. ${dest} is now clear.\n`)
             context.setRegister(dest, 0);
         }
-        this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: src2, rd: dest});
+        context.encodedInst = this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: src2, rd: dest});
     }
         
 
@@ -40,5 +40,9 @@ export class Set_On_Less_Than implements IInstruction {
 
         const shamt = "00000";
         return parseInt((opcode + rs + rt + rd + shamt + funct),2);
+    }
+
+    instructionType(): string {
+        return "R";
     }
 }

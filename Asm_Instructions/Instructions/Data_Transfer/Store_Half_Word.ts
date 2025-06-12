@@ -3,7 +3,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
 export class StoreHalf implements IInstruction {
     //lw $t0, 
-    private regex = /^\s*sh\s+\$(\w+),\s*([-+]?\w+)\s*\(\s*\$(\w+)\s*\)\s*$/i
+    private regex = /^\s*(?:(\w+):)?\s*sh\s+\$(\w+),\s*([-+]?\w+)\s*\(\s*\$(\w+)\s*\)\s*(?:#\s*(.*))?$/i
 
     match(line: string): boolean{
         return this.regex.test(line);
@@ -13,22 +13,21 @@ export class StoreHalf implements IInstruction {
         const match = this.regex.exec(context.currentLine);
         if (!match) return;
 
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = Number(src1);
         const val2 = context.getRegister(src2);
 
         //Control variable to facilitate the half word
-        const addressOffset1 = val1 >= 4 ? (Number(src1)/4|0) *4 : 0;
+        const addressOffset1 = val1 % 4 === 0 ? ((val1 / 4 | 0) * 4) : 0;
         const addressOffset2 = val1 % 4;
-        const trueAddressOffset = addressOffset1 + addressOffset2;
         const newContext = context.getRegister(dest);
 
-        context.setMemory(val2 + trueAddressOffset, this.halfWord(newContext, val1 % 4|0));
+        context.setMemory(val2 + addressOffset1, this.halfWord(newContext, addressOffset2|0));
         if (val1 % 2 !== 0) return;
         
-        console.log(`\n${ExecutionContext.fixToHex(
-            this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1}))}\n`
-        );
+        
+        context.encodedInst = this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1})
+        
     }
         
     encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, immediate: number}): number {
@@ -41,6 +40,10 @@ export class StoreHalf implements IInstruction {
         const immediate = params.immediate.toString(2).padStart(16, '0');
 
         return parseInt((opcode + rs + rt + immediate),2);
+    }
+
+    instructionType(): string {
+        return "I";
     }
 
     /**

@@ -3,7 +3,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
 export class Nor implements IInstruction {
     //lw $t0, 
-    private regex = /^\s*nor\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*$/i
+    private regex = /^\s*(?:(\w+):)?\s*nor\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*(?:#\s*(.*))?$/i
 
     match(line: string): boolean{
         return this.regex.test(line);
@@ -13,14 +13,14 @@ export class Nor implements IInstruction {
         const match = this.regex.exec(context.currentLine);
         if (!match) return;
 
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
         
         // NOR operation is equivalent to NOT (A OR B)
         // Using bytewise NOT (~) and OR (|)
         context.setRegister(dest, (~(val1 | val2)) >>> 0);
-        this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: src2, rd: dest});
+        context.encodedInst = this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: src2, rd: dest});
     }
         
 
@@ -36,5 +36,9 @@ export class Nor implements IInstruction {
 
         const shamt = "00000";
         return parseInt((opcode + rs + rt + rd + shamt + funct),2);
+    }
+
+    instructionType(): string {
+        return "R";
     }
 }

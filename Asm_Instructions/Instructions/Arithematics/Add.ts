@@ -2,7 +2,7 @@ import { IInstruction } from "../IInstructions";
 import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
 export class Add implements IInstruction {
-    private regex = /^\s*add\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*$/i;
+    private regex = /^\s*(?:(\w+):)?\s*add\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*(?:#\s*(.*))?$/i;
 
     match(line: string): boolean {
         return this.regex.test(line);
@@ -12,14 +12,13 @@ export class Add implements IInstruction {
         const match = this.regex.exec(context.currentLine);
         if (!match) return;
 
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
         context.setRegister(dest, val1 + val2);
 
-        console.log(ExecutionContext.fixToHex(
-            this.encondingForTheHolyMachine({registers: context.registers, rt: src2, rs: src1, rd: dest})
-        ));
+        context.encodedInst = this.encondingForTheHolyMachine({registers: context.registers, rt: src2, rs: src1, rd: dest})
+        
     }
     
     encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, rd: string}): number {
@@ -34,5 +33,9 @@ export class Add implements IInstruction {
 
         const shamt = "00000";
         return parseInt((opcode + rs + rt + rd + shamt + funct),2);
+    }
+
+    instructionType(): string {
+        return "R";
     }
 }

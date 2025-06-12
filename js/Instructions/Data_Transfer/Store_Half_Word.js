@@ -15,11 +15,10 @@ export class StoreHalf {
         const val1 = Number(src1);
         const val2 = context.getRegister(src2);
         //Control variable to facilitate the half word
-        const addressOffset1 = val1 >= 4 ? (Number(src1) / 4 | 0) * 4 : 0;
+        const addressOffset1 = val1 % 4 === 0 ? ((val1 / 4 | 0) * 4) : 0;
         const addressOffset2 = val1 % 4;
-        const trueAddressOffset = addressOffset1 + addressOffset2;
         const newContext = context.getRegister(dest);
-        context.setMemory(val2 + trueAddressOffset, this.halfWord(newContext, val1 % 4 | 0));
+        context.setMemory(val2 + addressOffset1, this.halfWord(newContext, addressOffset2 | 0));
         if (val1 % 2 !== 0)
             return;
         console.log(`\n${ExecutionContext.fixToHex(this.encondingForTheHolyMachine({ registers: context.registers, rs: src2, rt: dest, immediate: val1 }))}\n`);

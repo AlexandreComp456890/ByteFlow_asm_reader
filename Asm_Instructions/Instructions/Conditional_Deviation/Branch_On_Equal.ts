@@ -3,7 +3,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
 export class Branch_On_Equal implements IInstruction {
     //lw $t0, 
-    private regex = /^\s*beq\s+\$(\w+),\s*\$(\w+),\s*(\w+)\s*$/i
+    private regex = /^\s*(?:(\w+):)?\s*beq\s+\$(\w+),\s*\$(\w+),\s*(\w+)\s*(?:#\s*(.*))?$/i
 
     match(line: string): boolean{
         return this.regex.test(line);
@@ -13,7 +13,7 @@ export class Branch_On_Equal implements IInstruction {
         const match = this.regex.exec(context.currentLine);
         if (!match) return;
 
-        const [, src1, src2, dest] = match;
+        const [, , src1, src2, dest] = match;
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
         
@@ -33,9 +33,9 @@ export class Branch_On_Equal implements IInstruction {
             // If condition is false, continue to the next instruction
             console.log("\nCondition failed, continuing to the next instruction.");
         }
-        console.log(`${ExecutionContext.fixToHex(
-            this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: src2, immediate: literalIndex}))}\n`
-        );
+        
+        context.encodedInst = this.encondingForTheHolyMachine({registers: context.registers, rs: src1, rt: src2, immediate: literalIndex})
+        
     }
         
     encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, immediate: number}): number {
@@ -48,5 +48,9 @@ export class Branch_On_Equal implements IInstruction {
         const immediate = params.immediate.toString(2).padStart(16, '0');
 
         return parseInt((opcode + rs + rt + immediate),2);
+    }
+
+    instructionType(): string {
+        return "I";
     }
 }

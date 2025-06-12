@@ -3,7 +3,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext";
 
 export class LoadWord implements IInstruction {
     //lw $t0, 
-    private regex = /^\s*lw\s+\$(\w+),\s*([-+]?\w+)\s*\(\s*\$(\w+)\s*\)\s*$/i
+    private regex = /^\s*(?:(\w+):)?\s*lw\s+\$(\w+),\s*([-+]?\w+)\s*\(\s*\$(\w+)\s*\)\s*(?:#\s*(.*))?$/i
 
     match(line: string): boolean{
         return this.regex.test(line);
@@ -13,7 +13,7 @@ export class LoadWord implements IInstruction {
         const match = this.regex.exec(context.currentLine);
         if (!match) return;
 
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = Number(src1);
         const val2 = context.getRegister(src2);
         const newContext = context.getMemory(val2 + val1);
@@ -22,9 +22,9 @@ export class LoadWord implements IInstruction {
 
         context.setRegister(dest, newContext);
 
-        console.log(`\n${ExecutionContext.fixToHex(
-            this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1}))}\n`
-        );
+        
+        context.encodedInst = this.encondingForTheHolyMachine({registers: context.registers, rs: src2, rt: dest, immediate: val1})
+       
     }
         
     encondingForTheHolyMachine(params: {registers: Record<string,number>, rt: string, rs: string, immediate: number}): number {
@@ -37,5 +37,9 @@ export class LoadWord implements IInstruction {
         const immediate = params.immediate.toString(2).padStart(16, '0');
 
         return parseInt((opcode + rs + rt + immediate),2);
+    }
+
+    instructionType(): string {
+        return "I";
     }
 }

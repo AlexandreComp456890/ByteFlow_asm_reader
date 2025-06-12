@@ -5,13 +5,14 @@ export class ExecutionContext {
     //memory atributes
     static memory: Record<number, number> = {};
     private MEMORY_START: number = 0x10008000;
-    private MEMORY_END: number = 0x1001FFFF;
+    private MEMORY_END: number = 0x10020000;
     
     //Program couter control
+    static programCounter:number = 0x00400000;
     currentLine: string = "";
     allLines: Record<number,string> = {};
     literals: Record<string, number> = {};
-    static programCounter:number = 0x00400000;
+    encodedInst: number | number[] = 0;
 
     constructor() {
         for (let r of [
@@ -22,6 +23,7 @@ export class ExecutionContext {
             "t0","t1","t2","t3","t4","t5","t6","t7",
             "s0","s1","s2","s3","s4","s5","s6","s7",
             "t8","t9",
+            "k0", "k1", 
             "gp",
             "sp",
             "fp",
@@ -30,16 +32,27 @@ export class ExecutionContext {
             this.registers[r] = 0;
         }
 
-        for (let i= this.MEMORY_START; i <= this.MEMORY_END; i+=4){
+        for (let i= this.MEMORY_START; i < this.MEMORY_END; i+=4){
             ExecutionContext.memory[i] = 0x00;
         }
     }
 
+    
     getRegister(name: string): number {
+        let validRegisters = new Set(Object.keys(this.registers));
+        if (!validRegisters.has(name)){
+            console.log(`Invalid register at ${this.currentLine}.`)
+            return 0x00;
+        }
         return this.registers[name] ?? 0x00;
     }
-
+    
     setRegister(name: string, value: number | null): void {
+        let validRegisters = new Set(Object.keys(this.registers));
+        if (!validRegisters.has(name)){
+            console.log(`Invalid register at ${this.currentLine}.`)
+            return;
+        }
         if (name === "zero") return; // $zero is always 0
         if (value !== null) this.registers[name] = value;
     }
@@ -70,7 +83,7 @@ export class ExecutionContext {
     }
 
     private memoryCheck(address: number, half: boolean, byte: boolean): boolean {
-        if (address < this.MEMORY_START && address > this.MEMORY_END-4){
+        if (address < this.MEMORY_START && address >= this.MEMORY_END-4){
             console.error(`Memory address ${ExecutionContext.fixToHex(address)} is out of bounds. Faulty line: ${this.currentLine}`);
             return false;
         }

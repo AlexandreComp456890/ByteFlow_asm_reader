@@ -16,7 +16,7 @@
             <nav>
                 <a href="../Inicial/index.html" class="nav-link" id="home">Home</a>
                 <a href="../UploadCode/uploadCode.html" class="nav-link" id="upload">Upload</a>
-                <a href="codeEditor.html" class="nav-link" id="editor">Editor</a>
+                <a href="../CodeEditor/codeEditor.html" class="nav-link" id="editor">Editor</a>
             </nav>
         </header>
         
@@ -30,7 +30,7 @@
                             <thead>
                                 <tr>
                                     <th>PC</th>
-                                    <th>type</th>
+                                    <th>Type</th>
                                     <th>Encoding</th>
                                     <th>Thread</th>
                                 </tr>
@@ -39,19 +39,24 @@
                         </table>
                     </div>
                     <h2>Memories</h2>
+                    <div class="pagination">
+                        <button id="prevBtn" class="page-btn" onclick="prevPage()">&laquo;</button>
+                        <span id="pageNumber">Page 1</span>
+                        <button id="nextBtn" class="page-btn" onclick="nextPage()">&raquo;</button>
+                    </div>
                     <div class="scroll-tabela">
                         <table id="memoriaTabela" class="tabela-memoria">
                             <thead>
                                 <tr>
                                     <th>Address</th>
-                                    <th>Value + 0</th>
-                                    <th>Value + 4</th>
-                                    <th>Value + 8</th>
-                                    <th>Value + 0C</th>
-                                    <th>Value + 10</th>
-                                    <th>Value + 14</th>
-                                    <th>Value + 18</th>
-                                    <th>Value + 1C</th>
+                                    <th>Value (+00)</th>
+                                    <th>Value (+04)</th>
+                                    <th>Value (+08)</th>
+                                    <th>Value (+0C)</th>
+                                    <th>Value (+10)</th>
+                                    <th>Value (+14)</th>
+                                    <th>Value (+18)</th>
+                                    <th>Value (+1C)</th>
                                 </tr>
                             </thead>
                             <tbody></tbody>
@@ -71,7 +76,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                 <tr><td>$at</td><td>1</td><td></td></tr>
+                                <tr><td>$zero</td><td>0</td><td></td></tr>
+                                <tr><td>$at</td><td>1</td><td></td></tr>
                                 <tr><td>$v0</td><td>2</td><td></td></tr>
                                 <tr><td>$v1</td><td>3</td><td></td></tr>
                                 <tr><td>$a0</td><td>4</td><td></td></tr>
@@ -106,10 +112,22 @@
                         </table>
                     </div>
                     <!-- Parágrafos dentro do container -->
-                    <p class="info-p">PC:</p>
-                    <p class="info-p">Tempo de execução na linha:</p>
-                    <p class="info-p">Instrução atual:</p>
-                    <p class="info-p">Tipo de instrução:</p>
+                    <p class="info-p">
+                        <span>PC:</span>
+                        <span class="cpuValues" id="pc"></span>
+                    </p>
+                    <p class="info-p">
+                        <span>Tempo de execução na linha:</span>
+                        <span class="cpuValues" id="execution"></span>
+                    </p>
+                    <p class="info-p">
+                        <span>Instrução atual:</span>
+                        <span class="cpuValues" id="currentInst"></span>
+                    </p>
+                    <p class="info-p">
+                        <span>Tipo de instrução:</span>
+                        <span class="cpuValues" id="typeInst"></span>
+                    </p>
                 </div>
             </section>
         </div>
@@ -119,7 +137,7 @@
         </footer>
 
         <script src="../Inicial/layout.js"></script>
-        <script src="../CodeRun/codeRun.js"></script>
+        <script type="module" src="./codeRun.js"></script>
     </div>
 </body>
 </html>

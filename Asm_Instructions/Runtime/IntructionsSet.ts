@@ -69,8 +69,16 @@ export class InstructionSet {
     //Miscellaneous
     new Literal_Control(),
   ];
-
+  
   findMatchingInstruction(line: string): IInstruction | null {
     return this.instructions.find(instr => instr.match(line)) || null;
+  }
+  
+  findLabel(line: string): IInstruction | null{
+    const labelPattern = /^\s*([A-Z0-9_]+):\s*(.*)?$/i
+    if (labelPattern.test(line)) {
+      return this.instructions.find(instr => instr instanceof Literal_Control ? instr.match(line) : null) || null;
+    }
+    return null;
   }
 }
