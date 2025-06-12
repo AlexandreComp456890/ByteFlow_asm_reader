@@ -22,14 +22,18 @@
         </header>
         
         <div id="componentes">    
-            <h2>Interpreter</h2>  
+            <h2 class="titulo-principal">Interpreter</h2> 
             <div class="button-group">
-                <button type="button" id="stepInto" class="btn btn-primary"><i class="bi bi-play-fill"></i></button>
-                <button type="button" id="runCode" class="btn btn-primary"><i class="bi bi-fast-forward-fill"></i></button>
+                <button type="button" id="stepInto" class="btn btn-primary tooltip" data-tooltip="line line">
+                    <i class="bi bi-play-fill"></i>
+                </button>
+                <button type="button" id="runCode" class="btn btn-primary tooltip" data-tooltip="run everything">
+                    <i class="bi bi-fast-forward-fill"></i>
+                </button>
             </div>
             <section class="tabela-section">
                 <div class="tabelas-esquerda">
-                    <h2>Execution</h2>
+                    <h2 class="titulo-tabela">Execution</h2>
                     <div class="scroll-tabela">
                         <table id="execucaoTabela" class="tabela-execucao">
                             <thead>
@@ -43,12 +47,7 @@
                             <tbody></tbody>
                         </table>
                     </div>
-                    <h2>Memories</h2>
-                    <div class="pagination">
-                        <button id="prevBtn" class="page-btn" onclick="prevPage()">&laquo;</button>
-                        <span id="pageNumber">Page 1</span>
-                        <button id="nextBtn" class="page-btn" onclick="nextPage()">&raquo;</button>
-                    </div>
+                    <h2 class="titulo-tabela">Memories</h2>
                     <div class="scroll-tabela">
                         <table id="memoriaTabela" class="tabela-memoria">
                             <thead>
@@ -67,10 +66,14 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                    <div class="pagination">
+                        <button id="prevBtn" class="page-btn" onclick="prevPage()">&laquo;</button>
+                        <span id="pageNumber">Page 1</span>
+                        <button id="nextBtn" class="page-btn" onclick="nextPage()">&raquo;</button>
+                    </div>
                 </div>
-
                 <div class="registradores-container">
-                    <h2>Registrars</h2>
+                    <h2 id="titulo-tabela-direita">Registers</h2>
                     <div class="scroll-tabela tabela-registradores">
                         <table id="registradoresTabela" class="tabela-registradores">
                             <thead>

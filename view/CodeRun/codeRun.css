@@ -12,47 +12,63 @@
     gap: 10px;
     align-items: stretch;
     box-sizing: border-box;
-    height: auto; /* Altura automática conforme o conteúdo */
+    height: auto;
     min-height: 600px;
 }
-.button-group{margin: 20px;}
-.button-group button{
-    background-color: #3a3a3a;
-    color: white;
-    border: none;
-    border-radius: 12px; /* rounder corners */
-    padding: 10px 16px;
-    font-size: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
-    display: inline-block;
-}
-.button-group button:hover:not(:disabled) {
-    background-color: #5c5c5c;
-    transform: scale(1.05);
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    gap: 10px;
 }
 
-#componentes > h2 {
+.button-group button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: var(--highlight-pink); /* igual aos outros */
+    color: #000;
+}
+
+.button-group button:hover:not(:disabled) {
+    background-color: #6a95ff;
+}
+
+.titulo-principal {
     text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
     padding: 5px;
     color: #f8f8f2;
     font-size: 28px;
 }
 
-.tabelas-esquerda > h2,
-.registradores-container > h2 {
-    margin-top: 0 !important;
-    margin-bottom: 13px;
-    padding: 5px 0;
+.titulo-tabela {
+    display: flex;
+    margin-bottom: 0;
+    justify-content: center;
+    align-items: center;
     text-align: center;
-    color: #f8f8f2;
-    font-size: 20px;
-    flex-shrink: 0;
+    width: 100%;
 }
 
+#titulo-tabela-direita{
+    display: flex;
+    margin-bottom: 19.5px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
 .tabelas-esquerda {
     display: flex;
     flex-direction: column;
@@ -70,7 +86,7 @@
     box-sizing: border-box;
     overflow: hidden;
     align-items: flex-start;
-    height: auto; /* Permite crescer com o conteúdo */
+    height: auto;
 }
 
 .scroll-tabela {
@@ -83,7 +99,7 @@
 }
 
 .scroll-tabela.tabela-registradores {
-    max-height: 300px; 
+    max-height: 300px;
     overflow-y: auto;
     overflow-x: auto;
     border-radius: 6px;
@@ -138,7 +154,6 @@
     background-color: #3a3d56;
 }
 
-/* Estilo dos parágrafos informativos abaixo da tabela de registradores */
 .info-p {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -155,8 +170,8 @@
     white-space: nowrap;
 }
 
-.cpuValues{
-    margin-left: auto; 
+.cpuValues {
+    margin-left: auto;
 }
 
 .highlight {
@@ -172,33 +187,63 @@
     gap: 1rem;
     margin: 20px 0;
     font-family: Arial, sans-serif;
-  }
-  
-.page-btn {
-    background-color: #3a3a3a;
-    color: white;
-    border: none;
-    border-radius: 12px; /* rounder corners */
-    padding: 10px 16px;
-    font-size: 16px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
 }
 
-.page-btn:disabled {
-    background-color: #555;
-    cursor: not-allowed;
-    box-shadow: none;
+.page-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: var(--highlight-pink);
+    color: #000;
 }
 
 .page-btn:hover:not(:disabled) {
-    background-color: #5c5c5c;
-    transform: scale(1.05);
+    background-color: #6a95ff;
 }
 
+.page-btn:disabled {
+    background-color: #aaa;  /* cinza claro para indicar desabilitado */
+    color: #555;              /* texto levemente apagado */
+    cursor: not-allowed;
+    box-shadow: none;
+}
 #pageNumber {
     color: #fff;
     font-size: 18px;
     font-weight: bold;
+}
+
+.tooltip {
+    position: relative;
+}
+
+/* Tooltip text */
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%; /* Acima do botão */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+/* Show tooltip on hover */
+.tooltip:hover::after {
+    opacity: 1;
 }
