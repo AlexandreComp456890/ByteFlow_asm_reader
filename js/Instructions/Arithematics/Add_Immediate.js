@@ -1,7 +1,7 @@
 import { ExecutionContext } from "../../Runtime/ExecutionContext.js";
 export class Add_Immediate {
     constructor() {
-        this.regex = /^\s*(?:(\w+):)?\s*addi\s+\$(\w+),\s*\$(\w+),\s*(\w+)\s*(?:#\s*(.*))?$/i;
+        this.regex = /^\s*(?:(\w+):)?\s*addi\s+\$(\w+),\s*\$(\w+),\s*([-+]?\w+)\s*(?:#\s*(.*))?$/i;
     }
     match(line) {
         return this.regex.test(line);

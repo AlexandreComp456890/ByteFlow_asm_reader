@@ -37,19 +37,21 @@ export class Interpreter {
             return {done: true, error: "Program not loaded or failed to parse"};
         const pc = ExecutionContext.programCounter;
         const line = this.context.allLines[pc];
-        if (line === undefined) {
-            return { done: true }; // End of program
-        }
-    
+        
         this.context.currentLine = line;
         const instr = this.instructionSet.findMatchingInstruction(line);
-    
+        
         if (instr) {
             instr.execute(this.context);
             this.currentEncodedInst = this.context.encodedInst;
             this.typeOfInstr = instr.instructionType();
             ExecutionContext.programCounter += 4;
-    
+            
+            if (this.context.allLines[ExecutionContext.programCounter] === undefined){
+                this.currentEncodedInst = 0;
+                this.typeOfInstr = "None";
+                return { done: true };
+            }
             return {done: false};
         }
     
@@ -60,9 +62,10 @@ export class Interpreter {
     }
 
     parserProgram(lines) {
+        const commentPattern = /^\s*#.*$/i
         let pc = ExecutionContext.programCounter;
         for (let line of lines) {
-            if (line === undefined || line.trim() === "")
+            if (line === undefined || line.trim() === "" || commentPattern.test(line))
                 continue; //Case there is whitespace
             this.context.currentLine = line;
             const instr = this.instructionSet.findMatchingInstruction(line);

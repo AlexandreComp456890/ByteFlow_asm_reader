@@ -21,11 +21,14 @@ document.addEventListener("DOMContentLoaded", function () {
 function salvarCodigo() {
     // Obtém e remove espaços extras do conteúdo digitado
     const conteudo = editor.getValue().trim();
-
+    const clockFreq = document.getElementById("clockFrequency").value.trim();
     // Verifica se o conteúdo não está vazio
     if (conteudo) {
         // Cria um blob com o conteúdo (tipo texto)
-        const blob = new Blob([conteudo], { type: "text/plain" });
+        const addClock = (clock) => {
+            return `Config_CPU = [${clock}]\n`
+        }
+        const blob = new Blob([addClock(clockFreq), conteudo], { type: "text/plain" });
 
         // Gera uma URL temporária para o blob
         const url = URL.createObjectURL(blob);
@@ -50,16 +53,48 @@ function salvarCodigo() {
 function rodarCodigo() {
     // Obtém e remove espaços extras do conteúdo digitado
     const conteudo = editor.getValue().trim();
-    //const clock = document.getElementById();
-    console.log(conteudo);
+    const clockFreq = document.getElementById("clockFrequency").value.trim();
     // Verifica se há conteúdo
     if (conteudo) {
         // Abre uma nova janela com o simulador ou executor
+        verificarClock(clockFreq);
         localStorage.setItem("assemblyCode", conteudo);
+        
         abrirNovaJanela();
     } else {
         // Alerta o usuário caso o editor esteja vazio
         alert("Enter some code before running.");
+    }
+}
+
+function verificarClock(clockString){
+    const clockDefiner = /^([0-9.]+)([a-zA-Z]+)$/;
+    if (clockDefiner.test(clockString)) {
+        const match = clockString.match(clockDefiner);
+        const value = parseFloat(match[1]);
+        const unit = match[2].toUpperCase();
+
+        const multiplicador = (string) => {
+            switch (string){
+                case "GHZ":
+                    return 1000000000;
+                case "MHZ":
+                    return 1000000;
+                case "KHZ":
+                    return 1000;
+                case "HZ":
+                    return 1;
+                default:
+                    console.warn("Clock frequency poorly made. Running without time couter.")
+                    return 0;
+            }
+        }
+        const fatorMultiplicativo = multiplicador(unit.toUpperCase());
+        
+        if(fatorMultiplicativo === 0) return;
+        localStorage.setItem("frequency", value*fatorMultiplicativo);
+    }else{
+        console.warn("Clock frequency not set or poorly made. Running without time couter.")
     }
 }
 

@@ -42,19 +42,42 @@ uploadButton.addEventListener("click", () => {
 
     const reader = new FileReader(); // Cria um leitor para ler o arquivo como texto
     reader.onload = function (e) {
-        const clockDefiner = /^\s*Config_CPU\s*=\s*\[\s*([0-9.]+[A-Za-z]+)\s*,\s*([A-Za-z]\s*\=\s*[0-9])\s*,\s*([A-Za-z]\s*\=\s*[0-9])\s*,\s*([A-Za-z]\s*\=\s*[0-9])\s*\]\s*(?:#\s*(.*))\s*?$/i;
+        const clockDefiner = /^\s*Config_CPU\s*=\s*\[\s*([0-9.]+[A-Za-z]+)\s*(?:,\s*([A-Za-z]\s*=\s*[0-9])\s*,\s*([A-Za-z]\s*=\s*[0-9])\s*,\s*([A-Za-z]\s*=\s*[0-9]))?\s*\]\s*(?:#\s*(.*))?\s*$/i;
         const conteudo = e.target.result; // Obtém o conteúdo do arquivo lido
 
         let linhas = conteudo.split('\n'); // Divide o conteúdo em linhas
         if (clockDefiner.test(linhas[0])){
-            const match = clockDefiner.exec(linhas[0])
-            localStorage.setItem("frequency", match[1]);
+            const match = clockDefiner.exec(linhas[0]);
+            const trueClock = match[1].match(/^([0-9.]+)([a-zA-Z]+)$/);
+            const value = parseFloat(trueClock[1]);
+            const unit = trueClock[2].toUpperCase();
+            console.log(value, unit);
+
+            const multiplicador = (string) => {
+                switch (string){
+                    case "GHZ":
+                        return 1000000000;
+                    case "MHZ":
+                        return 1000000;
+                    case "KHZ":
+                        return 1000;
+                    case "HZ":
+                        return 1;
+                    default:
+                        console.warn("Clock frequency poorly made. Running without time couter.")
+                        return 0;
+                }
+            }
+            const fatorMultiplicativo = multiplicador(unit.toUpperCase());
+
+            if(fatorMultiplicativo === 0) return;
+            localStorage.setItem("frequency", value*fatorMultiplicativo);
         }else{
             console.warn("Clock frequency not set or poorly made. Running without time couter.")
         }
-        linhas = linhas.splice(1); // Tira a linha de configuração do clock
+        linhas = linhas.slice(1); // Tira a linha de configuração do clock
         localStorage.setItem("assemblyCode", linhas.join("\n")); // Loga as linhas no console para debug
-
+        
         // Abre uma nova janela para execução do código (simulador)
         abrirNovaJanela();
     };

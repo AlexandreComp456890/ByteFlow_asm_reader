@@ -1,11 +1,11 @@
-import { Interpreter } from "../../js/Runtime/Interpreter.js"
+import { Interpreter } from "../../js/Runtime/Interpreter.js" 
 import { ExecutionContext } from "../../js/Runtime/ExecutionContext.js";
 
 let memory = [];
 let baseAddresses = [];
 let rowsPerPage = 16;
 let currentPage = 0;
-
+let count = 0;
 
 function adicionarLinhaTabela(interp) {
     const tabela = document.getElementById("execucaoTabela");
@@ -23,11 +23,11 @@ function adicionarLinhaTabela(interp) {
         novaLinha.appendChild(celulaEndereco);
         
         const celulaTipo = document.createElement("td");
-        celulaTipo.textContent = `Type ${interp.typeOfInstr}`;;
+        celulaTipo.textContent = `Type ${interp.typeOfInstr}`;
         novaLinha.appendChild(celulaTipo);
 
         const celulaCodificado = document.createElement("td");
-        celulaCodificado.textContent = ExecutionContext.fixToHex(interp.currentEncodedInst);;
+        celulaCodificado.textContent = ExecutionContext.fixToHex(interp.currentEncodedInst);
         novaLinha.appendChild(celulaCodificado);
 
         const celulaInstrucao = document.createElement("td");
@@ -38,11 +38,12 @@ function adicionarLinhaTabela(interp) {
     }
 }
 
-function stepingCode(interp){
+function stepingCode(interp,clock) {
+    count = 1;
     const userGo = document.getElementById("stepInto");
     userGo.addEventListener("click", () => {
         const inlineCode = interp.stepInto();
-        if (inlineCode.error !== undefined){
+        if (inlineCode.error !== undefined) {
             alert(inlineCode.error);
             return;
         } 
@@ -51,17 +52,47 @@ function stepingCode(interp){
             interp.currentEncodedInst = 0;
             alert("Execution finished.");
         }
+        count++;
         atualizarRegistradores(interp);
-        setCPUvalues(interp);
+        setCPUvalues(interp, clock);
         renderTable(currentPage);
+
+        destacarLinhaExecucao(ExecutionContext.programCounter);
     });
 }
 
-function loadFullCode(interp){
+function destacarLinhaExecucao(pc) {
+    const tabela = document.getElementById("execucaoTabela").querySelector("tbody");
+    const linhas = tabela.querySelectorAll("tr");
+
+    linhas.forEach(linha => linha.classList.remove("highlight"));
+
+    for (const linha of linhas) {
+        const celulaPC = linha.cells[0].textContent.trim();
+        if (celulaPC === ExecutionContext.fixToHex(pc)) {
+            linha.classList.add("highlight");
+            linha.scrollIntoView({ behavior: "smooth", block: "center" });
+            break;
+        }
+    }
+}
+
+function destacarRegistradoresUsados(regIndices) {
+    const linhas = document.querySelectorAll("#registradoresTabela tbody tr");
+    linhas.forEach((linha) => linha.classList.remove("highlight"));
+
+    regIndices.forEach(index => {
+        if (linhas[index]) {
+            linhas[index].classList.add("highlight");
+            linhas[index].scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    });
+}
+
+function loadFullCode(interp) {
     const userGo = document.getElementById("runCode");
     userGo.addEventListener("click", () => {
         interp.run();
-        
         atualizarRegistradores(interp);
         setCPUvalues(interp);
         renderTable(currentPage);
@@ -130,9 +161,9 @@ function updateCell(rowIndex, colIndex, newValue) {
     if (targetPage !== currentPage) {
         currentPage = targetPage;
     }
-    
+
     renderTable(currentPage);
-    
+
     setTimeout(() => {
         const cell = document.getElementById(`cell-${rowIndex}-${colIndex}`);
         if (cell) {
@@ -158,8 +189,7 @@ window.prevPage = () => {
     }
 }
 
-
-function atualizarRegistradores(interp){
+function atualizarRegistradores(interp) {
     const valores = Object.values(interp.context.registers);
     const linhas = document.querySelectorAll("#registradoresTabela tbody tr");
 
@@ -171,33 +201,34 @@ function atualizarRegistradores(interp){
     });
 }
 
-function setCPUvalues(interp, clock){
+function setCPUvalues(interp, clock) {
     const valoresCPU = document.getElementsByClassName("cpuValues");
 
     valoresCPU[0].textContent = ExecutionContext.fixToHex(ExecutionContext.programCounter);
-    valoresCPU[1].textContent = clock !== undefined ? "" : "N/A";
+    const ns = (1 / clock) * count * 1e9;
+    let formattedNs;
+    valoresCPU[1].textContent = (!isNaN(clock) && clock > 0)
+        ? formattedNs = parseFloat(ns.toPrecision(3)).toString() + " ns"
+        : "N/A";
     valoresCPU[2].textContent = Array.isArray(interp.currentEncodedInst)
         ? interp.currentEncodedInst.map(encode => ExecutionContext.fixToHex(encode)).join(", ")
         : ExecutionContext.fixToHex(interp.currentEncodedInst);
     valoresCPU[3].textContent = `Type ${interp.typeOfInstr}`;
 }
 
-//Updates the tables
 window.addEventListener("DOMContentLoaded", function () {
     const code = localStorage.getItem("assemblyCode");
+    const freq = Number(localStorage.getItem("frequency"));
     if (code) {
         const linhas = code.split("\n").map(l => l.trim()).filter(l => l !== "");
         const interpreter = new Interpreter(linhas);
 
-        // Now `interpreter.context.allLines` is populated
-        // Call your table rendering function here:
         adicionarLinhaTabela(interpreter);
         atualizarRegistradores(interpreter);
-        setCPUvalues(interpreter);
+        setCPUvalues(interpreter, freq);
         renderTable(currentPage);
 
-        stepingCode(interpreter);
+        stepingCode(interpreter, freq);
         loadFullCode(interpreter);
-    }
+    }
 });
-

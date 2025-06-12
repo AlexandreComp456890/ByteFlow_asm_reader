@@ -2,8 +2,8 @@ export class ExecutionContext {
     constructor() {
         //regiters atributes
         this.registers = {};
-        this.MEMORY_START = 0x10008000;
-        this.MEMORY_END = 0x10020000;
+        this.MEMORY_START = 0x10010000;
+        this.MEMORY_END = 0x10050000;
         this.currentLine = "";
         this.allLines = {};
         this.literals = {};
@@ -24,6 +24,7 @@ export class ExecutionContext {
         ]) {
             this.registers[r] = 0;
         }
+        this.registers.sp = 0x10040000;
         for (let i = this.MEMORY_START; i < this.MEMORY_END; i += 4) {
             ExecutionContext.memory[i] = 0x00;
         }
