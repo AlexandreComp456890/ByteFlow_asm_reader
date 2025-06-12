@@ -2,7 +2,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext.js";
 export class StoreHalf {
     constructor() {
         //lw $t0, 
-        this.regex = /^\s*sh\s+\$(\w+),\s*([-+]?\w+)\s*\(\s*\$(\w+)\s*\)\s*$/i;
+        this.regex = /^\s*(?:(\w+):)?\s*sh\s+\$(\w+),\s*([-+]?\w+)\s*\(\s*\$(\w+)\s*\)\s*(?:#\s*(.*))?$/i;
     }
     match(line) {
         return this.regex.test(line);
@@ -11,7 +11,7 @@ export class StoreHalf {
         const match = this.regex.exec(context.currentLine);
         if (!match)
             return;
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = Number(src1);
         const val2 = context.getRegister(src2);
         //Control variable to facilitate the half word
@@ -21,7 +21,7 @@ export class StoreHalf {
         context.setMemory(val2 + addressOffset1, this.halfWord(newContext, addressOffset2 | 0));
         if (val1 % 2 !== 0)
             return;
-        console.log(`\n${ExecutionContext.fixToHex(this.encondingForTheHolyMachine({ registers: context.registers, rs: src2, rt: dest, immediate: val1 }))}\n`);
+        context.encodedInst = this.encondingForTheHolyMachine({ registers: context.registers, rs: src2, rt: dest, immediate: val1 });
     }
     encondingForTheHolyMachine(params) {
         // Type I
@@ -31,6 +31,9 @@ export class StoreHalf {
         const rt = (registerValue.indexOf(params.rt)).toString(2).padStart(5, '0');
         const immediate = params.immediate.toString(2).padStart(16, '0');
         return parseInt((opcode + rs + rt + immediate), 2);
+    }
+    instructionType() {
+        return "I";
     }
     /**
      * @description Splices the parameter value to 16 bits/2 bytes/half word and returns it.

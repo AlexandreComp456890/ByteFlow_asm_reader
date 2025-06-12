@@ -2,7 +2,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext.js";
 export class Branch_On_Equal {
     constructor() {
         //lw $t0, 
-        this.regex = /^\s*beq\s+\$(\w+),\s*\$(\w+),\s*(\w+)\s*$/i;
+        this.regex = /^\s*(?:(\w+):)?\s*beq\s+\$(\w+),\s*\$(\w+),\s*(\w+)\s*(?:#\s*(.*))?$/i;
     }
     match(line) {
         return this.regex.test(line);
@@ -11,7 +11,7 @@ export class Branch_On_Equal {
         const match = this.regex.exec(context.currentLine);
         if (!match)
             return;
-        const [, src1, src2, dest] = match;
+        const [, , src1, src2, dest] = match;
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
         const literalKeys = Object.keys(context.literals);
@@ -31,7 +31,7 @@ export class Branch_On_Equal {
             // If condition is false, continue to the next instruction
             console.log("\nCondition failed, continuing to the next instruction.");
         }
-        console.log(`${ExecutionContext.fixToHex(this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: src2, immediate: literalIndex }))}\n`);
+        context.encodedInst = this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: src2, immediate: literalIndex });
     }
     encondingForTheHolyMachine(params) {
         // Type I
@@ -41,5 +41,8 @@ export class Branch_On_Equal {
         const rt = (registerValue.indexOf(params.rt)).toString(2).padStart(5, '0');
         const immediate = params.immediate.toString(2).padStart(16, '0');
         return parseInt((opcode + rs + rt + immediate), 2);
+    }
+    instructionType() {
+        return "I";
     }
 }

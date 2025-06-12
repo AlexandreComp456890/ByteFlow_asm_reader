@@ -1,7 +1,7 @@
 export class Shift_Right_Logical {
     constructor() {
         //lw $t0, 
-        this.regex = /^\s*srl\s+\$(\w+),\s*\$(\w+),\s*([-+]?\w+)\s*$/i;
+        this.regex = /^\s*(?:(\w+):)?\s*srl\s+\$(\w+),\s*\$(\w+),\s*([-+]?\w+)\s*(?:#\s*(.*))?$/i;
     }
     match(line) {
         return this.regex.test(line);
@@ -10,12 +10,11 @@ export class Shift_Right_Logical {
         const match = this.regex.exec(context.currentLine);
         if (!match)
             return;
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = Number(src2);
         context.setRegister(dest, val1 >> val2);
-        console.log(`Executing RIGHT SHIFT: ${val1.toString(2).padStart(32, '0')} after SHIFT of ${val2}: ${context.getRegister(dest).toString(2).padStart(32, '0')}`);
-        this.encondingForTheHolyMachine({ registers: context.registers, rt: src1, shamt: val2, rd: dest });
+        context.encodedInst = this.encondingForTheHolyMachine({ registers: context.registers, rt: src1, shamt: val2, rd: dest });
     }
     encondingForTheHolyMachine(params) {
         const opcode = "000000";
@@ -27,5 +26,8 @@ export class Shift_Right_Logical {
         const shamt = params.shamt.toString(2).padStart(5, '0');
         // opcode for Type R will always be 0x00
         return parseInt((opcode + rs + rt + rd + shamt + funct), 2);
+    }
+    instructionType() {
+        return "R";
     }
 }

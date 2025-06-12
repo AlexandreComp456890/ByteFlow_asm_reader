@@ -1,7 +1,7 @@
 import { ExecutionContext } from "../../Runtime/ExecutionContext.js";
 export class Add_Immediate {
     constructor() {
-        this.regex = /^\s*addi\s+\$(\w+),\s*\$(\w+),\s*(\w+)\s*$/i;
+        this.regex = /^\s*(?:(\w+):)?\s*addi\s+\$(\w+),\s*\$(\w+),\s*(\w+)\s*(?:#\s*(.*))?$/i;
     }
     match(line) {
         return this.regex.test(line);
@@ -10,23 +10,14 @@ export class Add_Immediate {
         const match = this.regex.exec(context.currentLine);
         if (!match)
             return;
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = Number(src2);
         context.setRegister(dest, val1 + val2);
-        const result = this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: dest, immediate: val2 });
-        if (Array.isArray(result)) {
-            console.log();
-            for (let i = 0; i < result.length; i++)
-                console.log(ExecutionContext.fixToHex(result[i]));
-            console.log();
-        }
-        else {
-            console.log(`\n${ExecutionContext.fixToHex(result)}\n`);
-        }
+        context.encodedInst = this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: dest, immediate: val2 });
     }
     encondingForTheHolyMachine(params) {
-        // tupe I
+        // type I
         const opcode = "001000";
         const registerValue = Object.keys(params.registers);
         const rs = (registerValue.indexOf(params.rs)).toString(2).padStart(5, '0');
@@ -53,5 +44,8 @@ export class Add_Immediate {
         }
         const immediate = params.immediate.toString(2).padStart(16, '0');
         return parseInt((opcode + rs + rt + immediate), 2);
+    }
+    instructionType() {
+        return "I";
     }
 }

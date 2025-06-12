@@ -22,4 +22,8 @@ export class Literal_Control implements IInstruction {
     encondingForTheHolyMachine(): number {
         return 0b00000000;
     }
+
+    instructionType(): string {
+        return "N/A";
+    }
 }

@@ -15,6 +15,23 @@
     height: auto; /* Altura automática conforme o conteúdo */
     min-height: 600px;
 }
+.button-group{margin: 20px;}
+.button-group button{
+    background-color: #3a3a3a;
+    color: white;
+    border: none;
+    border-radius: 12px; /* rounder corners */
+    padding: 10px 16px;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+}
+.button-group button:hover:not(:disabled) {
+    background-color: #5c5c5c;
+    transform: scale(1.05);
+}
 
 #componentes > h2 {
     text-align: center;

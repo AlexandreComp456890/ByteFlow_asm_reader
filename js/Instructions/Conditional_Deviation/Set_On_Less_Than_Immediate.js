@@ -2,7 +2,7 @@ import { ExecutionContext } from "../../Runtime/ExecutionContext.js";
 export class Set_On_Less_Than_Immediate {
     constructor() {
         //lw $t0, 
-        this.regex = /^\s*slti\s+\$(\w+),\s*\$(\w+),\s*([-+]?\w+)\s*$/i;
+        this.regex = /^\s*(?:(\w+):)?\s*slti\s+\$(\w+),\s*\$(\w+),\s*([-+]?\w+)\s*(?:#\s*(.*))?$/i;
     }
     match(line) {
         return this.regex.test(line);
@@ -11,7 +11,7 @@ export class Set_On_Less_Than_Immediate {
         const match = this.regex.exec(context.currentLine);
         if (!match)
             return;
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = Number(src2);
         if (val2 >= (-32768) && val2 <= 0x7FFF) {
@@ -23,7 +23,7 @@ export class Set_On_Less_Than_Immediate {
                 console.log(`\n${val1} < ${val2} = false. ${dest} is now clear.`);
                 context.setRegister(dest, 0);
             }
-            console.log(`${ExecutionContext.fixToHex(this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: dest, immediate: val2 & 0xFFFF }))}\n`);
+            context.encodedInst = this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: dest, immediate: val2 & 0xFFFF });
             return;
         }
         console.log(`\nImmediate limit reached. immediate given: ${ExecutionContext.fixToHex(val2 & 0xFFFF)}. Limit: 0x0000FFFF.\n`);
@@ -36,5 +36,8 @@ export class Set_On_Less_Than_Immediate {
         const rt = (registerValue.indexOf(params.rt)).toString(2).padStart(5, '0');
         const immediate = (params.immediate).toString(2).padStart(16, '0');
         return parseInt((opcode + rs + rt + immediate), 2);
+    }
+    instructionType() {
+        return "I";
     }
 }

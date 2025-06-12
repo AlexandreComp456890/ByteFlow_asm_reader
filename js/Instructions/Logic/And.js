@@ -1,7 +1,7 @@
 export class And {
     constructor() {
         //lw $t0, 
-        this.regex = /^\s*and\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*$/i;
+        this.regex = /^\s*(?:(\w+):)?\s*and\s+\$(\w+),\s*\$(\w+),\s*\$(\w+)\s*(?:#\s*(.*))?$/i;
     }
     match(line) {
         return this.regex.test(line);
@@ -10,11 +10,11 @@ export class And {
         const match = this.regex.exec(context.currentLine);
         if (!match)
             return;
-        const [, dest, src1, src2] = match;
+        const [, , dest, src1, src2] = match;
         const val1 = context.getRegister(src1);
         const val2 = context.getRegister(src2);
         context.setRegister(dest, (val1 & val2) >>> 0);
-        this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: src2, rd: dest });
+        context.encodedInst = this.encondingForTheHolyMachine({ registers: context.registers, rs: src1, rt: src2, rd: dest });
     }
     encondingForTheHolyMachine(params) {
         // opcode 0x00 for type R
@@ -26,5 +26,8 @@ export class And {
         const rd = (registerValue.indexOf(params.rd)).toString(2).padStart(5, '0');
         const shamt = "00000";
         return parseInt((opcode + rs + rt + rd + shamt + funct), 2);
+    }
+    instructionType() {
+        return "R";
     }
 }

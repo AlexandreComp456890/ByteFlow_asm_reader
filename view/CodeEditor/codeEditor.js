@@ -1,8 +1,5 @@
-import { Interpreter } from "../../js/Runtime/Interpreter.js";
-
 // Variável global para armazenar a instância do editor CodeMirror
 let editor;
-const interpreter = new Interpreter();
 
 // Aguarda o carregamento completo do DOM antes de executar o código
 document.addEventListener("DOMContentLoaded", function () {
@@ -52,7 +49,8 @@ function salvarCodigo() {
 // Função para rodar o código digitado
 function rodarCodigo() {
     // Obtém e remove espaços extras do conteúdo digitado
-    let conteudo = editor.getValue().trim();
+    const conteudo = editor.getValue().trim();
+    //const clock = document.getElementById();
     console.log(conteudo);
     // Verifica se há conteúdo
     if (conteudo) {

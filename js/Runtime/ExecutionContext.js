@@ -3,11 +3,11 @@ export class ExecutionContext {
         //regiters atributes
         this.registers = {};
         this.MEMORY_START = 0x10008000;
-        this.MEMORY_END = 0x1001FFFF;
-        //Program couter control
+        this.MEMORY_END = 0x10020000;
         this.currentLine = "";
         this.allLines = {};
         this.literals = {};
+        this.encodedInst = 0;
         for (let r of [
             "zero",
             "at",
@@ -16,6 +16,7 @@ export class ExecutionContext {
             "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
             "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7",
             "t8", "t9",
+            "k0", "k1",
             "gp",
             "sp",
             "fp",
@@ -23,15 +24,25 @@ export class ExecutionContext {
         ]) {
             this.registers[r] = 0;
         }
-        for (let i = this.MEMORY_START; i <= this.MEMORY_END; i += 4) {
+        for (let i = this.MEMORY_START; i < this.MEMORY_END; i += 4) {
             ExecutionContext.memory[i] = 0x00;
         }
     }
     getRegister(name) {
         var _a;
+        let validRegisters = new Set(Object.keys(this.registers));
+        if (!validRegisters.has(name)) {
+            console.log(`Invalid register at ${this.currentLine}.`);
+            return 0x00;
+        }
         return (_a = this.registers[name]) !== null && _a !== void 0 ? _a : 0x00;
     }
     setRegister(name, value) {
+        let validRegisters = new Set(Object.keys(this.registers));
+        if (!validRegisters.has(name)) {
+            console.log(`Invalid register at ${this.currentLine}.`);
+            return;
+        }
         if (name === "zero")
             return; // $zero is always 0
         if (value !== null)
@@ -60,7 +71,7 @@ export class ExecutionContext {
         ExecutionContext.memory[address] = value;
     }
     memoryCheck(address, half, byte) {
-        if (address < this.MEMORY_START && address > this.MEMORY_END - 4) {
+        if (address < this.MEMORY_START && address >= this.MEMORY_END - 4) {
             console.error(`Memory address ${ExecutionContext.fixToHex(address)} is out of bounds. Faulty line: ${this.currentLine}`);
             return false;
         }
@@ -80,4 +91,5 @@ export class ExecutionContext {
 }
 //memory atributes
 ExecutionContext.memory = {};
+//Program couter control
 ExecutionContext.programCounter = 0x00400000;

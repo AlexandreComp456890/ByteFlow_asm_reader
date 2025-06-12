@@ -70,4 +70,11 @@ export class InstructionSet {
     findMatchingInstruction(line) {
         return this.instructions.find(instr => instr.match(line)) || null;
     }
+    findLabel(line) {
+        const labelPattern = /^\s*([A-Z0-9_]+):\s*(.*)?$/i;
+        if (labelPattern.test(line)) {
+            return this.instructions.find(instr => instr instanceof Literal_Control ? instr.match(line) : null) || null;
+        }
+        return null;
+    }
 }

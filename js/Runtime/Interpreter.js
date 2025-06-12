@@ -2,59 +2,89 @@ import { InstructionSet } from "./IntructionsSet.js";
 import { ExecutionContext } from "./ExecutionContext.js";
 import { Literal_Control } from "../Instructions/Literal_Control.js";
 export class Interpreter {
-    constructor() {
+    constructor(lines) {
         this.instructionSet = new InstructionSet();
         this.context = new ExecutionContext();
+        this.currentEncodedInst = 0;
+        this.typeOfInstr = ""
+        this.didRun = this.parserProgram(lines);
     }
-    run(lines) {
+    run() {
+        if (!this.didRun)
+            return;
         let auxPC;
-        this.parserProgram(lines);
-        console.log("------------------------------------------------------------------------");
-        console.log("Executer Runner:\n");
         while (true) {
             auxPC = ExecutionContext.programCounter; // Update auxPC to reflect the current program counter
             const line = this.context.allLines[auxPC];
-            if (line === undefined)
+            if (line === undefined){
+                this.currentEncodedInst = 0;
+                this.typeOfInstr = "None";
                 break; //Find another method to check end of runtime
+            }
             this.context.currentLine = line;
             const instr = this.instructionSet.findMatchingInstruction(line);
-            console.log(`\t${ExecutionContext.fixToHex(auxPC)} | ${line}`);
             if (instr) {
                 instr.execute(this.context);
+                this.currentEncodedInst = this.context.encodedInst;
+                this.typeOfInstr = instr.instructionType();
                 ExecutionContext.programCounter += 4;
             }
         }
-        console.log("------------------------------------------------------------------------");
-        for (const register in this.context.registers) {
-            console.log(`${register}:${ExecutionContext.fixToHex(this.context.getRegister(register))}`);
-        } // Debug output
     }
+
+    stepInto() {
+        if (!this.didRun)
+            return {done: true, error: "Program not loaded or failed to parse"};
+        const pc = ExecutionContext.programCounter;
+        const line = this.context.allLines[pc];
+        if (line === undefined) {
+            return { done: true }; // End of program
+        }
+    
+        this.context.currentLine = line;
+        const instr = this.instructionSet.findMatchingInstruction(line);
+    
+        if (instr) {
+            instr.execute(this.context);
+            this.currentEncodedInst = this.context.encodedInst;
+            this.typeOfInstr = instr.instructionType();
+            ExecutionContext.programCounter += 4;
+    
+            return {done: false};
+        }
+    
+        return {
+            done: true,
+            error: `Invalid instruction at PC=${pc}: ${line}`
+        };
+    }
+
     parserProgram(lines) {
-        console.log("------------------------------------------------------------------------");
-        console.log("Parser Runner:\n");
         let pc = ExecutionContext.programCounter;
         for (let line of lines) {
-            if (line === undefined || line === "")
+            if (line === undefined || line.trim() === "")
                 continue; //Case there is whitespace
             this.context.currentLine = line;
             const instr = this.instructionSet.findMatchingInstruction(line);
+            const isLabel = this.instructionSet.findLabel(line);
             if (instr) {
-                if (instr instanceof Literal_Control) {
-                    instr.execute(this.context, pc);
+                if (isLabel) {
+                    isLabel.execute(this.context, pc);
+                    if (!(instr instanceof Literal_Control)) {
+                        this.context.allLines[pc] = line;
+                        pc += 4;
+                    } // Any instruction runs before Literal_Control, in case it is a conjoint instruction (Label + Instruction).
+                    // Yes, it's a scuffed way of doing it. Currently working on a better method. 
                 }
                 else {
                     this.context.allLines[pc] = line;
-                    console.log(`\t${ExecutionContext.fixToHex(pc)} | ${this.context.allLines[pc]}`);
                     pc += 4;
                 }
             }
             else {
-                console.log("------------------------------------------------------------------------");
-                console.warn(`Unrecognized instruction: ${line} at ${ExecutionContext.fixToHex(pc)}.\nOperation ended in runtime error.`);
-                break;
+                return false;
             }
         }
-        console.log("------------------------------------------------------------------------");
-        console.log(`Execution finished. Program Counter: ${ExecutionContext.fixToHex(pc)}`);
+        return true;
     }
 }

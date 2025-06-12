@@ -6,7 +6,6 @@ let baseAddresses = [];
 let rowsPerPage = 16;
 let currentPage = 0;
 
-let interp = new Interpreter();
 
 function adicionarLinhaTabela(interp) {
     const tabela = document.getElementById("execucaoTabela");
@@ -24,11 +23,11 @@ function adicionarLinhaTabela(interp) {
         novaLinha.appendChild(celulaEndereco);
         
         const celulaTipo = document.createElement("td");
-        celulaTipo.textContent = "";
+        celulaTipo.textContent = `Type ${interp.typeOfInstr}`;;
         novaLinha.appendChild(celulaTipo);
 
         const celulaCodificado = document.createElement("td");
-        celulaCodificado.textContent = "";
+        celulaCodificado.textContent = ExecutionContext.fixToHex(interp.currentEncodedInst);;
         novaLinha.appendChild(celulaCodificado);
 
         const celulaInstrucao = document.createElement("td");
@@ -37,6 +36,36 @@ function adicionarLinhaTabela(interp) {
 
         tbody.appendChild(novaLinha);
     }
+}
+
+function stepingCode(interp){
+    const userGo = document.getElementById("stepInto");
+    userGo.addEventListener("click", () => {
+        const inlineCode = interp.stepInto();
+        if (inlineCode.error !== undefined){
+            alert(inlineCode.error);
+            return;
+        } 
+        if (inlineCode.done) {
+            interp.typeOfInstr = "None";
+            interp.currentEncodedInst = 0;
+            alert("Execution finished.");
+        }
+        atualizarRegistradores(interp);
+        setCPUvalues(interp);
+        renderTable(currentPage);
+    });
+}
+
+function loadFullCode(interp){
+    const userGo = document.getElementById("runCode");
+    userGo.addEventListener("click", () => {
+        interp.run();
+        
+        atualizarRegistradores(interp);
+        setCPUvalues(interp);
+        renderTable(currentPage);
+    });
 }
 
 function prepararMemoria() {
@@ -89,6 +118,11 @@ function renderTable(page) {
     updatePaginationButtons();
 }
 
+function updatePaginationButtons() {
+    document.getElementById('prevBtn').disabled = currentPage === 0;
+    document.getElementById('nextBtn').disabled = (currentPage + 1) * rowsPerPage > memory.length;
+}
+
 function updateCell(rowIndex, colIndex, newValue) {
     memory[rowIndex][colIndex] = newValue;
 
@@ -124,10 +158,6 @@ window.prevPage = () => {
     }
 }
 
-function updatePaginationButtons() {
-    document.getElementById('prevBtn').disabled = currentPage === 0;
-    document.getElementById('nextBtn').disabled = (currentPage + 1) * rowsPerPage > memory.length;
-}
 
 function atualizarRegistradores(interp){
     const valores = Object.values(interp.context.registers);
@@ -141,30 +171,33 @@ function atualizarRegistradores(interp){
     });
 }
 
-function setCPUvalues(interp){
+function setCPUvalues(interp, clock){
     const valoresCPU = document.getElementsByClassName("cpuValues");
 
     valoresCPU[0].textContent = ExecutionContext.fixToHex(ExecutionContext.programCounter);
-    valoresCPU[1].textContent = "N/A";
-    valoresCPU[2].textContent = ExecutionContext.fixToHex(interp.context.cu);
-    valoresCPU[3].textContent = `Type`;
+    valoresCPU[1].textContent = clock !== undefined ? "" : "N/A";
+    valoresCPU[2].textContent = Array.isArray(interp.currentEncodedInst)
+        ? interp.currentEncodedInst.map(encode => ExecutionContext.fixToHex(encode)).join(", ")
+        : ExecutionContext.fixToHex(interp.currentEncodedInst);
+    valoresCPU[3].textContent = `Type ${interp.typeOfInstr}`;
 }
 
-
-
+//Updates the tables
 window.addEventListener("DOMContentLoaded", function () {
     const code = localStorage.getItem("assemblyCode");
     if (code) {
         const linhas = code.split("\n").map(l => l.trim()).filter(l => l !== "");
-        const interpreter = new Interpreter();
-        interpreter.run(linhas);
+        const interpreter = new Interpreter(linhas);
 
         // Now `interpreter.context.allLines` is populated
         // Call your table rendering function here:
         adicionarLinhaTabela(interpreter);
-        renderTable(currentPage);
         atualizarRegistradores(interpreter);
         setCPUvalues(interpreter);
+        renderTable(currentPage);
+
+        stepingCode(interpreter);
+        loadFullCode(interpreter);
     }
 });
 

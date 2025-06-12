@@ -39,7 +39,14 @@
         </header>
         <!-- Área do editor de código -->
         <div id="codeEditor">
+            
             <h2>Type your Assembly code</h2>
+            <br>
+            <div id="clockZone">
+                <span>Insert clock: </span>
+                <input id="clockFrequency" type="text" pattern="/^([0-9.]+[A-Za-z]+)/" placeholder="(Optinal) 20MHz">
+                <button onclick="enviarClock()">Definir</button>
+            </div>
             <!-- Campo onde o usuário digita o código Assembly -->
             <textarea id="assemblyCode"></textarea>
             <br>
@@ -57,6 +64,6 @@
     <!-- Script adicional para layout da interface -->
     <script src="../Inicial/layout.js"></script>
     <!-- Importa o script que configura o editor e os botões -->
-    <script type="module" src="./codeEditor.js"></script>
+    <script src="./codeEditor.js"></script>
 </body>
 </html>

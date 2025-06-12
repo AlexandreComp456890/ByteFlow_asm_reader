@@ -6,6 +6,7 @@ export class Interpreter {
   private instructionSet = new InstructionSet();
   private context = new ExecutionContext();
   currentEncodedInst: number | number[] = 0;
+  typeOfInstr: string = ""
 
   run(lines: string[]): void {
     let auxPC: number;
