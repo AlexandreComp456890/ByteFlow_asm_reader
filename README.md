@@ -69,7 +69,7 @@ O ByteFlow é uma aplicação voltada ao ensino da linguagem Assembly MIPS, ofer
 - Apresentação do projeto
 - Navegação para Upload e Editor
 - Informações principais sobre o ByteFlow
-<img src="assets/Home.gif" alt="Logo do Projeto" width="1000"/>
+<img src="assets/Home.png" alt="Logo do Projeto" width="1000"/>
 
 ### 2. Página de Upload
 
