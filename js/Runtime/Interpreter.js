@@ -9,6 +9,7 @@ export class Interpreter {
         this.typeOfInstr = ""
         this.didRun = this.parserProgram(lines);
     }
+    
     run() {
         if (!this.didRun)
             return;
@@ -16,18 +17,17 @@ export class Interpreter {
         while (true) {
             auxPC = ExecutionContext.programCounter; // Update auxPC to reflect the current program counter
             const line = this.context.allLines[auxPC];
-            if (line === undefined){
-                this.currentEncodedInst = 0;
-                this.typeOfInstr = "None";
-                break; //Find another method to check end of runtime
-            }
             this.context.currentLine = line;
             const instr = this.instructionSet.findMatchingInstruction(line);
             if (instr) {
-                instr.execute(this.context);
-                this.currentEncodedInst = this.context.encodedInst;
                 this.typeOfInstr = instr.instructionType();
+                this.currentEncodedInst = this.context.encodedInst;
+                instr.execute(this.context);
                 ExecutionContext.programCounter += 4;
+            }
+            if (line === undefined){
+                ExecutionContext.programCounter += 4;
+                break; //Find another method to check end of runtime
             }
         }
     }
@@ -47,14 +47,13 @@ export class Interpreter {
             this.typeOfInstr = instr.instructionType();
             ExecutionContext.programCounter += 4;
             
-            if (this.context.allLines[ExecutionContext.programCounter] === undefined){
-                this.currentEncodedInst = 0;
-                this.typeOfInstr = "None";
-                return { done: true };
-            }
             return {done: false};
         }
-    
+        if (this.context.allLines[ExecutionContext.programCounter] === undefined){
+            ExecutionContext.programCounter += 4;
+            return { done: true };
+        }
+        
         return {
             done: true,
             error: `Invalid instruction at PC=${pc}: ${line}`

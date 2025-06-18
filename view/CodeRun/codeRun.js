@@ -39,7 +39,7 @@ function adicionarLinhaTabela(interp) {
 }
 
 function stepingCode(interp,clock) {
-    count = 1;
+    count = 0;
     const userGo = document.getElementById("stepInto");
     userGo.addEventListener("click", () => {
         const inlineCode = interp.stepInto();
@@ -59,6 +59,72 @@ function stepingCode(interp,clock) {
 
         destacarLinhaExecucao(ExecutionContext.programCounter);
     });
+}
+
+
+function loadFullCode(interp) {
+    const userGo = document.getElementById("runCode");
+    userGo.addEventListener("click", () => {
+        interp.run();
+        atualizarRegistradores(interp);
+        setCPUvalues(interp);
+        renderTable(currentPage);
+    });
+}
+
+function prepararMemoria() {
+    const enderecos = Object.keys(ExecutionContext.memory);
+    const valores = Object.values(ExecutionContext.memory);
+    
+    memory = [];
+    baseAddresses = [];
+    
+    for (let i = 0; i < enderecos.length; i += 8) {
+        const row = [];
+        for (let j = 0; j < 8; j++) {
+            const index = i + j;
+            if (index < valores.length) {
+                row.push(ExecutionContext.fixToHex(Number(valores[index])));
+            }
+        }
+        memory.push(row);
+        baseAddresses.push(ExecutionContext.fixToHex(Number(enderecos[i])));
+    }
+}
+
+function renderTable(page) {
+    prepararMemoria();
+    const tabela = document.getElementById("memoriaTabela");
+    const tbody = tabela.querySelector("tbody");
+    tbody.innerHTML = "";
+    
+    const start = page * rowsPerPage;
+    const end = start + rowsPerPage;
+    
+    for (let i = start; i < end && i < memory.length; i++) {
+        const novaLinha = document.createElement("tr");
+        
+        const celulaEndereco = document.createElement("td");
+        celulaEndereco.textContent = baseAddresses[i];
+        novaLinha.appendChild(celulaEndereco);
+        
+        for (let j = 0; j < 8; j++) {
+            const celulaValor = document.createElement("td");
+            celulaValor.id = `cell-${i}-${j}`;
+            celulaValor.textContent = memory[i][j];
+            novaLinha.appendChild(celulaValor);
+        }
+        
+        tbody.appendChild(novaLinha);
+    }
+
+    document.getElementById('pageNumber').textContent = `Page ${page + 1}`;
+    updatePaginationButtons();
+}
+
+function updatePaginationButtons() {
+    document.getElementById('prevBtn').disabled = currentPage === 0;
+    document.getElementById('nextBtn').disabled = (currentPage + 1) * rowsPerPage > memory.length;
 }
 
 function destacarLinhaExecucao(pc) {
@@ -89,81 +155,16 @@ function destacarRegistradoresUsados(regIndices) {
     });
 }
 
-function loadFullCode(interp) {
-    const userGo = document.getElementById("runCode");
-    userGo.addEventListener("click", () => {
-        interp.run();
-        atualizarRegistradores(interp);
-        setCPUvalues(interp);
-        renderTable(currentPage);
-    });
-}
-
-function prepararMemoria() {
-    const enderecos = Object.keys(ExecutionContext.memory);
-    const valores = Object.values(ExecutionContext.memory);
-
-    memory = [];
-    baseAddresses = [];
-
-    for (let i = 0; i < enderecos.length; i += 8) {
-        const row = [];
-        for (let j = 0; j < 8; j++) {
-            const index = i + j;
-            if (index < valores.length) {
-                row.push(ExecutionContext.fixToHex(Number(valores[index])));
-            }
-        }
-        memory.push(row);
-        baseAddresses.push(ExecutionContext.fixToHex(Number(enderecos[i])));
-    }
-}
-
-function renderTable(page) {
-    prepararMemoria();
-    const tabela = document.getElementById("memoriaTabela");
-    const tbody = tabela.querySelector("tbody");
-    tbody.innerHTML = "";
-
-    const start = page * rowsPerPage;
-    const end = start + rowsPerPage;
-
-    for (let i = start; i < end && i < memory.length; i++) {
-        const novaLinha = document.createElement("tr");
-
-        const celulaEndereco = document.createElement("td");
-        celulaEndereco.textContent = baseAddresses[i];
-        novaLinha.appendChild(celulaEndereco);
-
-        for (let j = 0; j < 8; j++) {
-            const celulaValor = document.createElement("td");
-            celulaValor.id = `cell-${i}-${j}`;
-            celulaValor.textContent = memory[i][j];
-            novaLinha.appendChild(celulaValor);
-        }
-
-        tbody.appendChild(novaLinha);
-    }
-
-    document.getElementById('pageNumber').textContent = `Page ${page + 1}`;
-    updatePaginationButtons();
-}
-
-function updatePaginationButtons() {
-    document.getElementById('prevBtn').disabled = currentPage === 0;
-    document.getElementById('nextBtn').disabled = (currentPage + 1) * rowsPerPage > memory.length;
-}
-
 function updateCell(rowIndex, colIndex, newValue) {
     memory[rowIndex][colIndex] = newValue;
-
+    
     const targetPage = Math.floor(rowIndex / rowsPerPage);
     if (targetPage !== currentPage) {
         currentPage = targetPage;
     }
-
+    
     renderTable(currentPage);
-
+    
     setTimeout(() => {
         const cell = document.getElementById(`cell-${rowIndex}-${colIndex}`);
         if (cell) {
@@ -204,7 +205,7 @@ function atualizarRegistradores(interp) {
 function setCPUvalues(interp, clock) {
     const valoresCPU = document.getElementsByClassName("cpuValues");
 
-    valoresCPU[0].textContent = ExecutionContext.fixToHex(ExecutionContext.programCounter);
+    valoresCPU[0].textContent = ExecutionContext.fixToHex(ExecutionContext.programCounter - 4);
     const ns = (1 / clock) * count * 1e9;
     let formattedNs;
     valoresCPU[1].textContent = (!isNaN(clock) && clock > 0)
@@ -213,7 +214,7 @@ function setCPUvalues(interp, clock) {
     valoresCPU[2].textContent = Array.isArray(interp.currentEncodedInst)
         ? interp.currentEncodedInst.map(encode => ExecutionContext.fixToHex(encode)).join(", ")
         : ExecutionContext.fixToHex(interp.currentEncodedInst);
-    valoresCPU[3].textContent = `Type ${interp.typeOfInstr}`;
+    valoresCPU[3].textContent = ` ${interp.typeOfInstr}-Type`;
 }
 
 window.addEventListener("DOMContentLoaded", function () {
@@ -225,8 +226,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
         adicionarLinhaTabela(interpreter);
         atualizarRegistradores(interpreter);
-        setCPUvalues(interpreter, freq);
         renderTable(currentPage);
+        destacarLinhaExecucao(ExecutionContext.programCounter);
 
         stepingCode(interpreter, freq);
         loadFullCode(interpreter);

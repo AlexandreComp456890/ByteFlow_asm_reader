@@ -7,9 +7,9 @@ export class NOP {
         return this.regex.test(line);
     }
     execute(context) {
-        context.encodedInst = this.encondingForTheHolyMachine({});
+        context.encodedInst = this.encondingForTheHolyMachine();
     }
-    encondingForTheHolyMachine(params) {
+    encondingForTheHolyMachine() {
         // opcode 0x00 for type R
         return 0;
     }
