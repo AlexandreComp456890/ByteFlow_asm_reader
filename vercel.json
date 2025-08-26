@@ -3,7 +3,7 @@
     "public": true,
     "builds": [
       {
-        "src": "view/Inicial/**",
+        "src": "**",
         "use": "@vercel/static"
       }
     ],
