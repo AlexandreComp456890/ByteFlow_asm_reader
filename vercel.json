@@ -1,15 +1,13 @@
 {
     "version": 2,
+    "public": true,
     "builds": [
       {
-        "src": "view/Inicial/index.html",
+        "src": "view/Inicial/**",
         "use": "@vercel/static"
       }
     ],
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "view/Inicial/index.html"
-      }
+      { "src": "/(.*)", "dest": "/view/Inicial/$1" }
     ]
-  }
+}
